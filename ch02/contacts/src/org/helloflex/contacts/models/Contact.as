@@ -17,8 +17,8 @@ package org.helloflex.contacts.models {
     public var user:User;
     public var company:Company;
     public var address:Address;
-    public var tasks:ArrayCollection;
-    public var messages:ArrayCollection;
+    public var tasks:ArrayCollection = new ArrayCollection();
+    public var messages:ArrayCollection = new ArrayCollection();
     
     public function Contact(
       firstName:String = "", 

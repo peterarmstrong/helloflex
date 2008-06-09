@@ -6,7 +6,7 @@ package org.helloflex.contacts.models {
     public var name:String;
     public var notes:String;
     public var address:Address;
-    public var contacts:ArrayCollection;
+    public var contacts:ArrayCollection = new ArrayCollection();
     
     public function Company(
       name:String = "", 

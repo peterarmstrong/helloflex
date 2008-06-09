@@ -2,7 +2,7 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
   xmlns:comp="org.helloflex.contacts.components.*"
   initialize="buildTestData()"
-  layout="horizontal"
+  layout="vertical"
   styleName="plain">
 <mx:Script><![CDATA[
   import org.helloflex.contacts.models.Message;
@@ -26,6 +26,11 @@
   [Bindable]
   private var _users:ArrayCollection = new ArrayCollection();
 
+  private function getContactName(contact:Contact):String {
+    return contact == null ? "" :
+      contact.firstName + " " + contact.lastName;
+  }
+
   public function buildTestData():void {
     var emailChannel:Channel = new Channel("email", 640000);
     var twitterChannel:Channel = new Channel("twitter", 140);
@@ -33,30 +38,41 @@
     var rubossAddress:Address = new Address( 
       "21 Water Street", "Suite 400",
       "Vancouver", "BC", "V6B 1A1", "Canada");
+      
+    var ruboss:Company = new Company("Ruboss",
+      "Flex and Rails Gurus", rubossAddress);
+    _companies.addItem(ruboss);
 
     var peterContact:Contact = new Contact("Peter",
       "Armstrong", "peter@ruboss.com");
     peterContact.address = rubossAddress;
+    peterContact.company = ruboss;
     var peterUser:User = new User("peter", "foooo",
       peterContact);
 
     var dimaContact:Contact = new Contact("Dima",
       "Berastau", "dima@ruboss.com");
     dimaContact.address = rubossAddress;
+    dimaContact.company = ruboss;
     var dimaUser:User = new User("dima", "barrr", dimaContact);
+
+    ruboss.contacts.addItem(peterContact);
+    ruboss.contacts.addItem(dimaContact);
     
     var task1:Task = new Task("Call Dima about framework",
       "Need to figure out 1.0 delivery target",
       null, false, _currentUser, dimaContact);
-    peterUser.tasks = new ArrayCollection();
+    var task2:Task = new Task("Get Dima's help with chapter 2",
+      "Never try to write two books at once again. Ever.",
+      null, false, _currentUser, dimaContact);
     peterUser.tasks.addItem(task1);
+    peterUser.tasks.addItem(task2);
 
-    var task2:Task = new Task();
-    task2.name = "Submit timesheet";
-    task2.user = dimaUser;
-    task2.contact = peterContact;
-    dimaUser.tasks = new ArrayCollection();
-    dimaUser.tasks.addItem(task2);
+    var task3:Task = new Task();
+    task3.name = "Submit timesheet";
+    task3.user = dimaUser;
+    task3.contact = peterContact;
+    dimaUser.tasks.addItem(task3);
 
     peterUser.messages = new ArrayCollection([
       new Message("I need your timesheet", peterUser,
@@ -96,6 +112,7 @@
           lcFirstName + "@company" + i + ".com");
         contact.twitter = login;
         contact.company = company;
+        company.contacts.addItem(contact);
         _contacts.addItem(contact);
         var user:User = new User(login, "changeme", contact);
         user.contacts =
@@ -105,18 +122,32 @@
     }
   }
 ]]></mx:Script>
-  <mx:HBox width="100%" height="100%">
-    <mx:Panel title="users" width="33%" height="100%">
-      <mx:List dataProvider="{_users}" labelField="login"
-        width="100%" height="100%"/>
-    </mx:Panel>
-    <mx:Panel title="companies" width="33%" height="100%">
-      <mx:List dataProvider="{_companies}" labelField="name"
-        width="100%" height="100%"/>
-    </mx:Panel>
-    <mx:Panel title="contacts" width="33%" height="100%">
-      <mx:List dataProvider="{_contacts}" labelField="firstName"
-        width="100%" height="100%"/>
-    </mx:Panel>
-  </mx:HBox>
+  <mx:HDividedBox width="100%" height="100%">
+    <mx:VDividedBox width="300" height="100%">
+      <mx:Panel title="Companies" width="100%" height="30%">
+        <mx:List id="companiesList" dataProvider="{_companies}"
+          labelField="name" width="100%" height="100%"/>
+      </mx:Panel>
+      <mx:Panel title="Contacts" width="100%" height="70%">
+        <mx:List id="contactsList"
+dataProvider="{Company(companiesList.selectedItem).contacts}"
+          labelFunction="getContactName"
+          width="100%" height="100%"/>
+      </mx:Panel>
+    </mx:VDividedBox>
+    <mx:VDividedBox width="100%" height="100%">
+      <mx:Panel title="Tasks" width="100%" height="50%">
+        <mx:List id="taskList"
+dataProvider="{Contact(contactsList.selectedItem).tasks}"
+          labelField="name"
+          width="100%" height="100%"/>
+      </mx:Panel>
+      <mx:Panel title="Messages" width="100%" height="50%">
+        <mx:List id="messageList"
+dataProvider="{Contact(contactsList.selectedItem).messages}"
+          labelField="content"
+          width="100%" height="100%"/>
+      </mx:Panel>
+    </mx:VDividedBox>
+  </mx:HDividedBox>
 </mx:Application>

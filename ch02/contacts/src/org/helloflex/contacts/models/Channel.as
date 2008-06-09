@@ -5,7 +5,7 @@ package org.helloflex.contacts.models {
   public class Channel {
     public var name:String;
     public var characterLimit:int;
-    public var messages:ArrayCollection;
+    public var messages:ArrayCollection = new ArrayCollection();
     
     public function Channel(
       name:String = "", 

@@ -6,9 +6,9 @@ package org.helloflex.contacts.models {
     public var login:String;
     public var password:String;
     public var contact:Contact;
-    public var tasks:ArrayCollection;
-    public var contacts:ArrayCollection;
-    public var messages:ArrayCollection;
+    public var tasks:ArrayCollection = new ArrayCollection();
+    public var contacts:ArrayCollection = new ArrayCollection();
+    public var messages:ArrayCollection = new ArrayCollection();
     
     public function User(
       login:String = "", 
