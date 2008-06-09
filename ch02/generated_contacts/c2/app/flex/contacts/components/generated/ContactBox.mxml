@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" label="Contact"
+  xmlns:rcomponents="org.ruboss.components.*">
+<mx:Script><![CDATA[
+  import org.ruboss.Ruboss;
+  import org.ruboss.utils.RubossUtils;
+  import contacts.models.Contact;
+  import contacts.models.User;
+  import contacts.models.Company;
+
+  [Bindable]
+  public var editedContact:Contact = new Contact();
+  
+  public function createContact():void {
+    var contact:Contact = new Contact();
+    contact.firstName = firstNameTextInput.text;
+    contact.lastName = lastNameTextInput.text;
+    contact.email = emailTextInput.text;
+    contact.homePhone = homePhoneTextInput.text;
+    contact.mobilePhone = mobilePhoneTextInput.text;
+    contact.workPhone = workPhoneTextInput.text;
+    contact.skype = skypeTextInput.text;
+    contact.facebook = facebookTextInput.text;
+    contact.twitter = twitterTextInput.text;
+    contact.blog = blogTextInput.text;
+    contact.notes = notesTextArea.text;
+
+    contact.user = User(userComboBox.selectedItem);
+    contact.company = Company(companyComboBox.selectedItem);
+    Ruboss.models.create(contact, onContactCreate);
+  }
+
+  public function updateContact():void {
+    editedContact.firstName = firstNameTextInput.text;
+    editedContact.lastName = lastNameTextInput.text;
+    editedContact.email = emailTextInput.text;
+    editedContact.homePhone = homePhoneTextInput.text;
+    editedContact.mobilePhone = mobilePhoneTextInput.text;
+    editedContact.workPhone = workPhoneTextInput.text;
+    editedContact.skype = skypeTextInput.text;
+    editedContact.facebook = facebookTextInput.text;
+    editedContact.twitter = twitterTextInput.text;
+    editedContact.blog = blogTextInput.text;
+    editedContact.notes = notesTextArea.text;
+
+    editedContact.user = User(userComboBox.selectedItem);
+    editedContact.company = Company(companyComboBox.selectedItem);
+    Ruboss.models.update(editedContact, onContactUpdate);
+  }
+
+  public function destroyContact():void {
+    Ruboss.models.destroy(editedContact, onContactDestroy);
+  }
+  
+  private function onContactSelect():void {
+    editedContact = RubossUtils.clone(contactsDataGrid.selectedItem) as Contact;
+  }
+  
+  private function onContactCreate(contact:Contact):void {
+    editedContact = new Contact;
+  }
+  
+  private function onContactUpdate(contact:Contact):void {
+    contactsDataGrid.selectedItem = contact;
+    editedContact = RubossUtils.clone(contact) as Contact;
+  }
+  
+  private function onContactDestroy(contact:Contact):void {
+    onContactCreate(contact);
+  }
+]]></mx:Script>
+  <mx:Panel id="contactsPanel" title="Contacts List"
+    width="{width}" height="300">
+    <mx:DataGrid id="contactsDataGrid"
+      height="100%"
+      horizontalScrollPolicy="auto"
+      dataProvider="{Ruboss.models.index(Contact)}"
+      change="onContactSelect()">
+      <mx:columns>
+        <mx:DataGridColumn dataField="firstName" headerText="FirstName"
+          width="150" minWidth="100"/>
+        <mx:DataGridColumn dataField="lastName" headerText="LastName"
+          width="150" minWidth="100"/>
+        <mx:DataGridColumn dataField="email" headerText="Email"
+          width="150" minWidth="100"/>
+        <mx:DataGridColumn dataField="homePhone" headerText="HomePhone"
+          width="150" minWidth="100"/>
+        <mx:DataGridColumn dataField="mobilePhone" headerText="MobilePhone"
+          width="150" minWidth="100"/>
+        <mx:DataGridColumn dataField="workPhone" headerText="WorkPhone"
+          width="150" minWidth="100"/>
+        <mx:DataGridColumn dataField="skype" headerText="Skype"
+          width="150" minWidth="100"/>
+        <mx:DataGridColumn dataField="facebook" headerText="Facebook"
+          width="150" minWidth="100"/>
+        <mx:DataGridColumn dataField="twitter" headerText="Twitter"
+          width="150" minWidth="100"/>
+        <mx:DataGridColumn dataField="blog" headerText="Blog"
+          width="150" minWidth="100"/>
+        <mx:DataGridColumn dataField="notes" headerText="Notes"
+          width="150" minWidth="100"/>
+        <mx:DataGridColumn editable="false" sortable="false"
+          width="150" dataField="user"
+          headerText="User">
+        </mx:DataGridColumn>
+        <mx:DataGridColumn editable="false" sortable="false"
+          width="150" dataField="company"
+          headerText="Company">
+        </mx:DataGridColumn>
+        <mx:DataGridColumn headerText="" width="70" minWidth="70"
+          editable="false" dataField="name">
+          <mx:itemRenderer>
+            <mx:Component>
+              <mx:HBox horizontalAlign="center" paddingLeft="2"
+                paddingRight="2">
+                <mx:Button label="delete" width="100%"
+                  click="outerDocument.destroyContact()">
+                </mx:Button>
+              </mx:HBox>
+            </mx:Component>
+          </mx:itemRenderer>
+        </mx:DataGridColumn>
+      </mx:columns>
+    </mx:DataGrid>
+  </mx:Panel>
+  <mx:Panel title="Contact Editor" width="100%" height="{height - 320}" verticalScrollPolicy="auto">
+    <mx:Form width="100%" height="100%">
+      <mx:FormItem label="FirstName" width="100%">
+        <mx:TextInput id="firstNameTextInput" width="100%"
+          text="{editedContact.firstName}"/>
+      </mx:FormItem>
+      <mx:FormItem label="LastName" width="100%">
+        <mx:TextInput id="lastNameTextInput" width="100%"
+          text="{editedContact.lastName}"/>
+      </mx:FormItem>
+      <mx:FormItem label="Email" width="100%">
+        <mx:TextInput id="emailTextInput" width="100%"
+          text="{editedContact.email}"/>
+      </mx:FormItem>
+      <mx:FormItem label="HomePhone" width="100%">
+        <mx:TextInput id="homePhoneTextInput" width="100%"
+          text="{editedContact.homePhone}"/>
+      </mx:FormItem>
+      <mx:FormItem label="MobilePhone" width="100%">
+        <mx:TextInput id="mobilePhoneTextInput" width="100%"
+          text="{editedContact.mobilePhone}"/>
+      </mx:FormItem>
+      <mx:FormItem label="WorkPhone" width="100%">
+        <mx:TextInput id="workPhoneTextInput" width="100%"
+          text="{editedContact.workPhone}"/>
+      </mx:FormItem>
+      <mx:FormItem label="Skype" width="100%">
+        <mx:TextInput id="skypeTextInput" width="100%"
+          text="{editedContact.skype}"/>
+      </mx:FormItem>
+      <mx:FormItem label="Facebook" width="100%">
+        <mx:TextInput id="facebookTextInput" width="100%"
+          text="{editedContact.facebook}"/>
+      </mx:FormItem>
+      <mx:FormItem label="Twitter" width="100%">
+        <mx:TextInput id="twitterTextInput" width="100%"
+          text="{editedContact.twitter}"/>
+      </mx:FormItem>
+      <mx:FormItem label="Blog" width="100%">
+        <mx:TextInput id="blogTextInput" width="100%"
+          text="{editedContact.blog}"/>
+      </mx:FormItem>
+      <mx:FormItem label="Notes" width="100%">
+        <mx:TextArea id="notesTextArea" width="100%" height="200"
+          text="{editedContact.notes}"/>
+      </mx:FormItem>
+      <mx:FormItem label="User" width="100%">
+        <mx:ComboBox id="userComboBox"
+          width="150" labelField="{User.LABEL}"
+          dataProvider="{Ruboss.models.index(User)}"
+          selectedItem="{editedContact.user}" />
+      </mx:FormItem>
+      <mx:FormItem label="Company" width="100%">
+        <mx:ComboBox id="companyComboBox"
+          width="150" labelField="{Company.LABEL}"
+          dataProvider="{Ruboss.models.index(Company)}"
+          selectedItem="{editedContact.company}" />
+      </mx:FormItem>
+    </mx:Form>
+    <mx:ControlBar width="100%" height="100%">
+      <mx:Button label="Create Contact" width="34%" height="30"
+        click="createContact()"/>
+      <mx:Button label="Update Contact" width="33%" height="30"
+        enabled="{contactsDataGrid.selectedItem != null}"
+        click="updateContact()"/>
+      <mx:Button label="Delete Contact" width="33%" height="30"
+        enabled="{contactsDataGrid.selectedItem != null}"
+        click="destroyContact()"/>
+    </mx:ControlBar>
+  </mx:Panel>
+</mx:VBox>

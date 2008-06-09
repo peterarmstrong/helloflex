@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+    width="100%" height="100%" layout="vertical"
+    backgroundGradientColors="[#000000, #CCCCCC]">
+<mx:Script>
+<![CDATA[
+    import mx.collections.ArrayCollection;
+    import mx.events.ListEvent;
+    import mx.rpc.events.ResultEvent;
+    import com.pomodo.model.Task;
+
+    [Bindable]
+    private var _tasks:ArrayCollection = new ArrayCollection();
+    
+    private function createTask():void {
+        _tasks.addItem(new Task(newTaskTI.text));
+    }
+
+    private function deleteSelectedTask():void {
+        _tasks.removeItemAt(taskList.selectedIndex);
+    }
+]]>
+</mx:Script>
+    <mx:Panel title="Todo List" width="100%" height="100%">
+        <mx:HBox width="100%" paddingLeft="5" paddingRight="5"
+            paddingTop="5">
+            <mx:Label text="New Task"/>
+            <mx:TextInput id="newTaskTI" width="100%"
+                enter="createTask()"/>
+            <mx:Button label="Create" click="createTask()"/>
+        </mx:HBox>
+        <mx:List id="taskList" width="100%" height="100%"
+            editable="true" labelField="name"
+            dataProvider="{_tasks}"/>
+        <mx:ControlBar width="100%" horizontalAlign="center">
+            <mx:Button label="Delete" width="100%" height="30"
+                enabled="{taskList.selectedItem != null}"
+                click="deleteSelectedTask()"/>
+        </mx:ControlBar>
+    </mx:Panel>
+</mx:Application>

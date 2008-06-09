@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" label="Task"
+  xmlns:rcomponents="org.ruboss.components.*">
+<mx:Script><![CDATA[
+  import org.ruboss.Ruboss;
+  import org.ruboss.utils.RubossUtils;
+  import contacts.models.Task;
+  import contacts.models.User;
+  import contacts.models.Contact;
+
+  [Bindable]
+  public var editedTask:Task = new Task();
+  
+  public function createTask():void {
+    var task:Task = new Task();
+    task.name = nameTextInput.text;
+    task.notes = notesTextArea.text;
+    task.due = dueDateChooser.selectedDate;
+    task.completed = completedCheckBox.selected;
+
+    task.user = User(userComboBox.selectedItem);
+    task.contact = Contact(contactComboBox.selectedItem);
+    Ruboss.models.create(task, onTaskCreate);
+  }
+
+  public function updateTask():void {
+    editedTask.name = nameTextInput.text;
+    editedTask.notes = notesTextArea.text;
+    editedTask.due = dueDateChooser.selectedDate;
+    editedTask.completed = completedCheckBox.selected;
+
+    editedTask.user = User(userComboBox.selectedItem);
+    editedTask.contact = Contact(contactComboBox.selectedItem);
+    Ruboss.models.update(editedTask, onTaskUpdate);
+  }
+
+  public function destroyTask():void {
+    Ruboss.models.destroy(editedTask, onTaskDestroy);
+  }
+  
+  private function onTaskSelect():void {
+    editedTask = RubossUtils.clone(tasksDataGrid.selectedItem) as Task;
+  }
+  
+  private function onTaskCreate(task:Task):void {
+    editedTask = new Task;
+  }
+  
+  private function onTaskUpdate(task:Task):void {
+    tasksDataGrid.selectedItem = task;
+    editedTask = RubossUtils.clone(task) as Task;
+  }
+  
+  private function onTaskDestroy(task:Task):void {
+    onTaskCreate(task);
+  }
+]]></mx:Script>
+  <mx:Panel id="tasksPanel" title="Tasks List"
+    width="{width}" height="300">
+    <mx:DataGrid id="tasksDataGrid"
+      height="100%"
+      horizontalScrollPolicy="auto"
+      dataProvider="{Ruboss.models.index(Task)}"
+      change="onTaskSelect()">
+      <mx:columns>
+        <mx:DataGridColumn dataField="name" headerText="Name"
+          width="150" minWidth="100"/>
+        <mx:DataGridColumn dataField="notes" headerText="Notes"
+          width="150" minWidth="100"/>
+        <mx:DataGridColumn dataField="due" headerText="Due"
+          width="150" minWidth="100"/>
+        <mx:DataGridColumn editable="false" width="80" minWidth="80"
+          headerText="Completed"
+          dataField="completed">
+          <mx:itemRenderer>
+            <mx:Component>
+              <mx:HBox horizontalAlign="center">
+                <mx:Script><![CDATA[
+                  import contacts.models.Task;
+                  import org.ruboss.utils.RubossUtils;
+                  
+                  private function updateCompleted():void {
+                    var task:Task = RubossUtils.clone(data) as Task;
+                    task.completed = !task.completed;
+                    outerDocument.editedTask = task;
+                    outerDocument.updateTask();
+                  }
+                ]]></mx:Script>
+                <mx:CheckBox selected="{data.completed}"
+                  click="updateCompleted()"/>
+              </mx:HBox>
+            </mx:Component>
+          </mx:itemRenderer>
+        </mx:DataGridColumn>
+        <mx:DataGridColumn editable="false" sortable="false"
+          width="150" dataField="user"
+          headerText="User">
+        </mx:DataGridColumn>
+        <mx:DataGridColumn editable="false" sortable="false"
+          width="150" dataField="contact"
+          headerText="Contact">
+        </mx:DataGridColumn>
+        <mx:DataGridColumn headerText="" width="70" minWidth="70"
+          editable="false" dataField="name">
+          <mx:itemRenderer>
+            <mx:Component>
+              <mx:HBox horizontalAlign="center" paddingLeft="2"
+                paddingRight="2">
+                <mx:Button label="delete" width="100%"
+                  click="outerDocument.destroyTask()">
+                </mx:Button>
+              </mx:HBox>
+            </mx:Component>
+          </mx:itemRenderer>
+        </mx:DataGridColumn>
+      </mx:columns>
+    </mx:DataGrid>
+  </mx:Panel>
+  <mx:Panel title="Task Editor" width="100%" height="{height - 320}" verticalScrollPolicy="auto">
+    <mx:Form width="100%" height="100%">
+      <mx:FormItem label="Name" width="100%">
+        <mx:TextInput id="nameTextInput" width="100%"
+          text="{editedTask.name}"/>
+      </mx:FormItem>
+      <mx:FormItem label="Notes" width="100%">
+        <mx:TextArea id="notesTextArea" width="100%" height="200"
+          text="{editedTask.notes}"/>
+      </mx:FormItem>
+      <mx:FormItem label="Due" width="100%">
+        <mx:DateChooser id="dueDateChooser" width="100%"
+          selectedDate="{editedTask.due}"/>
+      </mx:FormItem>
+      <mx:FormItem label="Completed" width="100%">
+        <mx:CheckBox id="completedCheckBox"
+          selected="{editedTask.completed}"/>
+      </mx:FormItem>
+      <mx:FormItem label="User" width="100%">
+        <mx:ComboBox id="userComboBox"
+          width="150" labelField="{User.LABEL}"
+          dataProvider="{Ruboss.models.index(User)}"
+          selectedItem="{editedTask.user}" />
+      </mx:FormItem>
+      <mx:FormItem label="Contact" width="100%">
+        <mx:ComboBox id="contactComboBox"
+          width="150" labelField="{Contact.LABEL}"
+          dataProvider="{Ruboss.models.index(Contact)}"
+          selectedItem="{editedTask.contact}" />
+      </mx:FormItem>
+    </mx:Form>
+    <mx:ControlBar width="100%" height="100%">
+      <mx:Button label="Create Task" width="34%" height="30"
+        click="createTask()"/>
+      <mx:Button label="Update Task" width="33%" height="30"
+        enabled="{tasksDataGrid.selectedItem != null}"
+        click="updateTask()"/>
+      <mx:Button label="Delete Task" width="33%" height="30"
+        enabled="{tasksDataGrid.selectedItem != null}"
+        click="destroyTask()"/>
+    </mx:ControlBar>
+  </mx:Panel>
+</mx:VBox>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" label="Company"
+  xmlns:rcomponents="org.ruboss.components.*">
+<mx:Script><![CDATA[
+  import org.ruboss.Ruboss;
+  import org.ruboss.utils.RubossUtils;
+  import contacts.models.Company;
+
+  [Bindable]
+  public var editedCompany:Company = new Company();
+  
+  public function createCompany():void {
+    var company:Company = new Company();
+    company.name = nameTextInput.text;
+    company.notes = notesTextArea.text;
+
+    Ruboss.models.create(company, onCompanyCreate);
+  }
+
+  public function updateCompany():void {
+    editedCompany.name = nameTextInput.text;
+    editedCompany.notes = notesTextArea.text;
+
+    Ruboss.models.update(editedCompany, onCompanyUpdate);
+  }
+
+  public function destroyCompany():void {
+    Ruboss.models.destroy(editedCompany, onCompanyDestroy);
+  }
+  
+  private function onCompanySelect():void {
+    editedCompany = RubossUtils.clone(companiesDataGrid.selectedItem) as Company;
+  }
+  
+  private function onCompanyCreate(company:Company):void {
+    editedCompany = new Company;
+  }
+  
+  private function onCompanyUpdate(company:Company):void {
+    companiesDataGrid.selectedItem = company;
+    editedCompany = RubossUtils.clone(company) as Company;
+  }
+  
+  private function onCompanyDestroy(company:Company):void {
+    onCompanyCreate(company);
+  }
+]]></mx:Script>
+  <mx:Panel id="companiesPanel" title="Companies List"
+    width="{width}" height="300">
+    <mx:DataGrid id="companiesDataGrid"
+      height="100%"
+      horizontalScrollPolicy="auto"
+      dataProvider="{Ruboss.models.index(Company)}"
+      change="onCompanySelect()">
+      <mx:columns>
+        <mx:DataGridColumn dataField="name" headerText="Name"
+          width="150" minWidth="100"/>
+        <mx:DataGridColumn dataField="notes" headerText="Notes"
+          width="150" minWidth="100"/>
+        <mx:DataGridColumn headerText="" width="70" minWidth="70"
+          editable="false" dataField="name">
+          <mx:itemRenderer>
+            <mx:Component>
+              <mx:HBox horizontalAlign="center" paddingLeft="2"
+                paddingRight="2">
+                <mx:Button label="delete" width="100%"
+                  click="outerDocument.destroyCompany()">
+                </mx:Button>
+              </mx:HBox>
+            </mx:Component>
+          </mx:itemRenderer>
+        </mx:DataGridColumn>
+      </mx:columns>
+    </mx:DataGrid>
+  </mx:Panel>
+  <mx:Panel title="Company Editor" width="100%" height="{height - 320}" verticalScrollPolicy="auto">
+    <mx:Form width="100%" height="100%">
+      <mx:FormItem label="Name" width="100%">
+        <mx:TextInput id="nameTextInput" width="100%"
+          text="{editedCompany.name}"/>
+      </mx:FormItem>
+      <mx:FormItem label="Notes" width="100%">
+        <mx:TextArea id="notesTextArea" width="100%" height="200"
+          text="{editedCompany.notes}"/>
+      </mx:FormItem>
+    </mx:Form>
+    <mx:ControlBar width="100%" height="100%">
+      <mx:Button label="Create Company" width="34%" height="30"
+        click="createCompany()"/>
+      <mx:Button label="Update Company" width="33%" height="30"
+        enabled="{companiesDataGrid.selectedItem != null}"
+        click="updateCompany()"/>
+      <mx:Button label="Delete Company" width="33%" height="30"
+        enabled="{companiesDataGrid.selectedItem != null}"
+        click="destroyCompany()"/>
+    </mx:ControlBar>
+  </mx:Panel>
+</mx:VBox>

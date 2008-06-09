@@ -1,0 +1,50 @@
+user:
+ - login*: string
+ - password: string
+ - has_one: [details]
+ - has_many: [tasks, contacts]
+
+contact:
+ - has_one: [details]
+
+details:
+ - first_name*: string
+ - last_name: string
+ - email: string
+ - home_phone: string
+ - mobile_phone: string
+ - work_phone: string
+ - skype: string
+ - twitter: string
+ - facebook: string
+ - blog: string
+ - notes: text
+ - address_line_one*: string
+ - address_line_two: string
+ - address_city: string
+ - address_state: string
+ - address_zip: string
+ - address_country: string
+ - belongs_to: [user, company]
+ - has_many: [tasks]
+
+message:
+ - content*: text
+ - user_id: integer
+ - belongs_to: [contact, channel]
+ 
+channel:
+ - name*: string
+ - character_limit: integer
+
+company:
+ - name*: string
+ - notes: text
+ - has_many: [contacts]
+
+task:
+ - name*: string
+ - notes: text
+ - due: date
+ - completed: boolean
+ - belongs_to: [user, contact]

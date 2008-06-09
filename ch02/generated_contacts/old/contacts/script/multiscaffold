@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+require File.dirname(__FILE__) + '/../config/boot'
+require File.dirname(__FILE__) + '/../config/environment'
+require 'rails_generator'
+require 'rails_generator/scripts/generate'
+
+source = 'db/model.txt'
+File.open(source, 'r').each_line do |line|
+  line.strip!
+  puts 'running: rscaffold ' + line
+  Rails::Generator::Scripts::Generate.new.run(["rscaffold"] + line.split, 
+    :flex_only => ARGV.include?('flexonly')) unless line.empty? or line =~ /^#/
+  puts 'done ...'
+  sleep 1
+end
+Rails::Generator::Scripts::Generate.new.run(["rconfig"], :app_only => true, :skip_framework => ARGV.include?('skipframework'))

@@ -1,0 +1,52 @@
+user:
+- login: string
+- password: string
+- has_one: [contact]
+- has_many: [tasks, contacts, messages]
+
+contact:
+- first_name: string
+- last_name: string
+- email: string
+- home_phone: string
+- mobile_phone: string
+- work_phone: string
+- skype: string
+- facebook: string
+- twitter: string
+- blog: string
+- notes: text
+- belongs_to: [user, company]
+- has_one: [address]
+- has_many: [tasks, messages]
+
+company:
+- name: string
+- notes: text
+- has_one: [address]
+- has_many: [contacts]
+
+address:
+- line_one: string
+- line_two: string
+- city: string
+- state: string
+- zip: string
+- country: string
+- belongs_to: [contact, company]
+
+message:
+- content: text
+- belongs_to: [user, contact, channel]
+
+channel:
+- name: string
+- character_limit: integer
+- has_many: [messages]
+
+task:
+- name: string
+- notes: text
+- due: date
+- completed: boolean
+- belongs_to: [user, contact]

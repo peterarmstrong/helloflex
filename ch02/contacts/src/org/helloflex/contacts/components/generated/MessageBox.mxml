@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" label="Message"
+  xmlns:rcomponents="org.ruboss.components.*">
+<mx:Script><![CDATA[
+  import org.ruboss.Ruboss;
+  import org.ruboss.utils.RubossUtils;
+  import contacts.models.Message;
+  import contacts.models.User;
+  import contacts.models.Contact;
+  import contacts.models.Channel;
+
+  [Bindable]
+  public var editedMessage:Message = new Message();
+  
+  public function createMessage():void {
+    var message:Message = new Message();
+    message.content = contentTextArea.text;
+
+    message.user = User(userComboBox.selectedItem);
+    message.contact = Contact(contactComboBox.selectedItem);
+    message.channel = Channel(channelComboBox.selectedItem);
+    Ruboss.models.create(message, onMessageCreate);
+  }
+
+  public function updateMessage():void {
+    editedMessage.content = contentTextArea.text;
+
+    editedMessage.user = User(userComboBox.selectedItem);
+    editedMessage.contact = Contact(contactComboBox.selectedItem);
+    editedMessage.channel = Channel(channelComboBox.selectedItem);
+    Ruboss.models.update(editedMessage, onMessageUpdate);
+  }
+
+  public function destroyMessage():void {
+    Ruboss.models.destroy(editedMessage, onMessageDestroy);
+  }
+  
+  private function onMessageSelect():void {
+    editedMessage = RubossUtils.clone(messagesDataGrid.selectedItem) as Message;
+  }
+  
+  private function onMessageCreate(message:Message):void {
+    editedMessage = new Message;
+  }
+  
+  private function onMessageUpdate(message:Message):void {
+    messagesDataGrid.selectedItem = message;
+    editedMessage = RubossUtils.clone(message) as Message;
+  }
+  
+  private function onMessageDestroy(message:Message):void {
+    onMessageCreate(message);
+  }
+]]></mx:Script>
+  <mx:Panel id="messagesPanel" title="Messages List"
+    width="{width}" height="300">
+    <mx:DataGrid id="messagesDataGrid"
+      height="100%"
+      horizontalScrollPolicy="auto"
+      dataProvider="{Ruboss.models.index(Message)}"
+      change="onMessageSelect()">
+      <mx:columns>
+        <mx:DataGridColumn dataField="content" headerText="Content"
+          width="150" minWidth="100"/>
+        <mx:DataGridColumn editable="false" sortable="false"
+          width="150" dataField="user"
+          headerText="User">
+        </mx:DataGridColumn>
+        <mx:DataGridColumn editable="false" sortable="false"
+          width="150" dataField="contact"
+          headerText="Contact">
+        </mx:DataGridColumn>
+        <mx:DataGridColumn editable="false" sortable="false"
+          width="150" dataField="channel"
+          headerText="Channel">
+        </mx:DataGridColumn>
+        <mx:DataGridColumn headerText="" width="70" minWidth="70"
+          editable="false" dataField="name">
+          <mx:itemRenderer>
+            <mx:Component>
+              <mx:HBox horizontalAlign="center" paddingLeft="2"
+                paddingRight="2">
+                <mx:Button label="delete" width="100%"
+                  click="outerDocument.destroyMessage()">
+                </mx:Button>
+              </mx:HBox>
+            </mx:Component>
+          </mx:itemRenderer>
+        </mx:DataGridColumn>
+      </mx:columns>
+    </mx:DataGrid>
+  </mx:Panel>
+  <mx:Panel title="Message Editor" width="100%" height="{height - 320}" verticalScrollPolicy="auto">
+    <mx:Form width="100%" height="100%">
+      <mx:FormItem label="Content" width="100%">
+        <mx:TextArea id="contentTextArea" width="100%" height="200"
+          text="{editedMessage.content}"/>
+      </mx:FormItem>
+      <mx:FormItem label="User" width="100%">
+        <mx:ComboBox id="userComboBox"
+          width="150" labelField="{User.LABEL}"
+          dataProvider="{Ruboss.models.index(User)}"
+          selectedItem="{editedMessage.user}" />
+      </mx:FormItem>
+      <mx:FormItem label="Contact" width="100%">
+        <mx:ComboBox id="contactComboBox"
+          width="150" labelField="{Contact.LABEL}"
+          dataProvider="{Ruboss.models.index(Contact)}"
+          selectedItem="{editedMessage.contact}" />
+      </mx:FormItem>
+      <mx:FormItem label="Channel" width="100%">
+        <mx:ComboBox id="channelComboBox"
+          width="150" labelField="{Channel.LABEL}"
+          dataProvider="{Ruboss.models.index(Channel)}"
+          selectedItem="{editedMessage.channel}" />
+      </mx:FormItem>
+    </mx:Form>
+    <mx:ControlBar width="100%" height="100%">
+      <mx:Button label="Create Message" width="34%" height="30"
+        click="createMessage()"/>
+      <mx:Button label="Update Message" width="33%" height="30"
+        enabled="{messagesDataGrid.selectedItem != null}"
+        click="updateMessage()"/>
+      <mx:Button label="Delete Message" width="33%" height="30"
+        enabled="{messagesDataGrid.selectedItem != null}"
+        click="destroyMessage()"/>
+    </mx:ControlBar>
+  </mx:Panel>
+</mx:VBox>

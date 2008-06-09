@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+  xmlns:generated="contacts.components.generated.*"
+  layout="vertical"
+  styleName="plain"
+  initialize="init()">
+  <mx:Script>
+    <![CDATA[
+      import contacts.controllers.ContactsController;
+
+      private function init():void {
+        ContactsController.initialize();
+      }
+    ]]>
+  </mx:Script>
+  <mx:TabNavigator width="100%" height="100%">
+    <!-- For a simple demo, put all the components here. -->
+    <generated:AddressBox/>
+    <generated:ChannelBox/>
+    <generated:CompanyBox/>
+    <generated:ContactBox/>
+    <generated:MessageBox/>
+    <generated:TaskBox/>
+    <generated:UserBox/>
+  </mx:TabNavigator>
+</mx:Application>
+

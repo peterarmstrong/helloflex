@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+company_one:
+  name: Company1NameString
+  notes: Company1NotesText
+
+company_two:
+  name: Company2NameString
+  notes: Company2NotesText
+
+company_three:
+  name: Company3NameString
+  notes: Company3NotesText
+
+company_four:
+  name: Company4NameString
+  notes: Company4NotesText

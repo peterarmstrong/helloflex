@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flexLibProperties version="1">
+<includeClasses>
+<classEntry path="twitter.api.Twitter"/>
+<classEntry path="twitter.api.data.TwitterStatus"/>
+<classEntry path="twitter.api.data.TwitterUser"/>
+<classEntry path="twitter.api.events.TwitterEvent"/>
+</includeClasses>
+<includeResources/>
+<namespaceManifests/>
+</flexLibProperties>
