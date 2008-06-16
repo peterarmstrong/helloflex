@@ -1,166 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
   xmlns:comp="org.helloflex.contacts.components.*"
-  initialize="buildTestData()"
   layout="vertical"
   styleName="plain">
 <mx:Script><![CDATA[
-  import org.helloflex.contacts.models.Message;
-  import org.helloflex.contacts.models.Task;
-  import org.helloflex.contacts.models.User;
-  import org.helloflex.contacts.models.Contact;
-  import org.helloflex.contacts.models.Company;
-  import org.helloflex.contacts.models.Channel;
-  import org.helloflex.contacts.models.Address;
-  import mx.collections.ArrayCollection;
-  
-  private static const NO_COMPANY:Company =
-    new Company("- None -");
-  
   [Bindable]
-  private var _currentUser:User;
-
-  [Bindable]
-  private var _companies:ArrayCollection = new ArrayCollection();
-
-  [Bindable]
-  private var _contacts:ArrayCollection = new ArrayCollection();
-
-  [Bindable]
-  private var _users:ArrayCollection = new ArrayCollection();
-
-  private function getContactName(contact:Contact):String {
-    return contact == null ? "" :
-      contact.firstName + " " + contact.lastName;
-  }
-  
-  
-
-  public function buildTestData():void {
-    var emailChannel:Channel = new Channel("email", 640000);
-    var twitterChannel:Channel = new Channel("twitter", 140);
-
-    var rubossAddress:Address = new Address( 
-      "21 Water Street", "Suite 400",
-      "Vancouver", "BC", "V6B 1A1", "Canada");
-      
-    var ruboss:Company = new Company("Ruboss",
-      "Flex and Rails Gurus", rubossAddress);
-    _companies.addItem(ruboss);
-
-    var peterContact:Contact = new Contact("Peter",
-      "Armstrong", "peter@ruboss.com");
-    peterContact.address = rubossAddress;
-    peterContact.company = ruboss;
-    var peterUser:User = new User("peter", "foooo",
-      peterContact);
-
-    var dimaContact:Contact = new Contact("Dima",
-      "Berastau", "dima@ruboss.com");
-    dimaContact.address = rubossAddress;
-    dimaContact.company = ruboss;
-    var dimaUser:User = new User("dima", "barrr", dimaContact);
-
-    ruboss.contacts.addItem(peterContact);
-    ruboss.contacts.addItem(dimaContact);
+  private var companies:XML =
+    <companies>
+      <company>
+        <name>Adobe</name>
+      </company>
+      <company>
+        <name>Ruboss</name>
+      </company>
+      <company>
+        <name>Microsoft</name>
+      </company>
+    </companies>;
     
-    var task1:Task = new Task("Call Dima about framework",
-      "Need to figure out 1.0 delivery target",
-      null, false, _currentUser, dimaContact);
-    var task2:Task = new Task("Get Dima's help with chapter 2",
-      "Never try to write two books at once again. Ever.",
-      null, false, _currentUser, dimaContact);
-    peterUser.tasks.addItem(task1);
-    peterUser.tasks.addItem(task2);
-    dimaContact.tasks.addItem(task1);
-    dimaContact.tasks.addItem(task2);
-
-    var task3:Task = new Task();
-    task3.name = "Submit timesheet";
-    task3.user = dimaUser;
-    task3.contact = peterContact;
-    dimaUser.tasks.addItem(task3);
-    peterContact.tasks.addItem(task3);
-
-    peterUser.messages = new ArrayCollection([
-      new Message("I need your timesheet", peterUser,
-        dimaContact, emailChannel),
-      new Message("Great job on the refactoring!", peterUser,
-        dimaContact, twitterChannel)]);
-    peterUser.contacts = new ArrayCollection([
-      dimaContact,
-      new Contact("Ludwig", "van Beethoven", "lvb@ruboss.com"),
-      new Contact("Wolfgang", "Mozart", "wolfgang@ruboss.com")]);
-    dimaUser.contacts = new ArrayCollection([
-      peterContact,
-      new Contact("Wolfgang", "Mozart", "wolfgang@ruboss.com")]);
-    _currentUser = peterUser;
-    
-    var firstNames:Array = ["John", "Frank", "Bob", "Peter",
-      "Jane", "Susan", "Natasha"];
-    var lastNames:Array = ["Doe", "Smith", "Richards", "Hunter",
-      "Armstrong", "Seymour", "Phillips"];
-    for (var i:int = 1; i < 30; i++) {
-      var address:Address = new Address( 
-        i + " Water Street",
-        "Suite 4" + (i % 10),
-        "Vancouver", "BC", "V6B 1A1", "Canada");
-      var company:Company = new Company(
-        "Company " + i,
-        "A small " + i + " employee startup",
-        address);
-      _companies.addItem(company);
-      for (var j:int = 0; j < i; j++) {
-        var firstName:String = String(firstNames[i % 7]);
-        var lcFirstName:String = firstName.toLowerCase();
-        var login:String = lcFirstName + i*100 + j;
-        var contact:Contact = new Contact(
-          firstNames[i % 7],
-          lastNames[i % 7],
-          lcFirstName + "@company" + i + ".com");
-        contact.twitter = login;
-        contact.company = company;
-        company.contacts.addItem(contact);
-        _contacts.addItem(contact);
-        var user:User = new User(login, "changeme", contact);
-        user.contacts =
-          new ArrayCollection(_contacts.source.slice());
-        _users.addItem(user);
-      }
-    }
-  }
+  [Bindable]
+  private var contacts:XML =
+    <contacts>
+      <contact>
+        <first_name>Peter</first_name>
+        <last_name>Armstrong</last_name>
+      </contact>
+      <contact>
+        <first_name>Dima</first_name>
+        <last_name>Berastau</last_name>
+      </contact>
+      <contact>
+        <first_name>Scott</first_name>
+        <last_name>Patten</last_name>
+      </contact>
+    </contacts>;
   
-  private function getUserName(user:User):String {
-    return user.contact.firstName + " " + user.contact.lastName;
+  private function getContactName(contact:XML):String {
+    return contact.first_name + " " + contact.last_name;
   }
 ]]></mx:Script>
   <mx:HDividedBox width="100%" height="100%">
     <mx:VBox width="300" height="100%">
       <mx:ComboBox id="companiesCB"
-        dataProvider="{_companies}"
+        dataProvider="{companies.children()}"
         labelField="name" width="100%"/>
-      <mx:ComboBox id="usersCB"
-        dataProvider="{_users}"
-        change="_currentUser = User(usersCB.selectedItem)"
-        labelFunction="getUserName"
-        width="100%"/>
-      <mx:Panel title="Contacts" width="100%" height="100%">
-        <mx:List id="contactsList"
-          dataProvider="{_currentUser.contacts}"
-          labelFunction="getContactName"
-          width="100%" height="100%"/>
-      </mx:Panel>
+      <mx:List id="contactsList"
+        dataProvider="{contacts.children()}"
+        labelFunction="getContactName"
+        width="100%" height="100%"/>
     </mx:VBox>
     <mx:VDividedBox width="100%" height="100%">
       <mx:Panel title="Tasks" width="100%" height="50%">
         <mx:List id="taskList"
-dataProvider="{Contact(contactsList.selectedItem).tasks}"
           labelField="name"
           width="100%" height="100%"/>
       </mx:Panel>
       <mx:Panel title="Messages" width="100%" height="50%">
         <mx:List id="messageList"
-dataProvider="{Contact(contactsList.selectedItem).messages}"
           labelField="content"
           width="100%" height="100%"/>
       </mx:Panel>
