@@ -14,6 +14,9 @@
   import org.helloflex.contacts.models.Address;
   import mx.collections.ArrayCollection;
   
+  private static const NO_COMPANY:Company =
+    new Company("- None -");
+  
   [Bindable]
   private var _currentUser:User;
 
@@ -67,12 +70,15 @@
       null, false, _currentUser, dimaContact);
     peterUser.tasks.addItem(task1);
     peterUser.tasks.addItem(task2);
+    dimaContact.tasks.addItem(task1);
+    dimaContact.tasks.addItem(task2);
 
     var task3:Task = new Task();
     task3.name = "Submit timesheet";
     task3.user = dimaUser;
     task3.contact = peterContact;
     dimaUser.tasks.addItem(task3);
+    peterContact.tasks.addItem(task3);
 
     peterUser.messages = new ArrayCollection([
       new Message("I need your timesheet", peterUser,
@@ -121,20 +127,28 @@
       }
     }
   }
+  
+  private function getUserName(user:User):String {
+    return user.contact.firstName + " " + user.contact.lastName;
+  }
 ]]></mx:Script>
   <mx:HDividedBox width="100%" height="100%">
-    <mx:VDividedBox width="300" height="100%">
-      <mx:Panel title="Companies" width="100%" height="30%">
-        <mx:List id="companiesList" dataProvider="{_companies}"
-          labelField="name" width="100%" height="100%"/>
-      </mx:Panel>
-      <mx:Panel title="Contacts" width="100%" height="70%">
+    <mx:VBox width="300" height="100%">
+      <mx:ComboBox id="companiesCB"
+        dataProvider="{_companies}"
+        labelField="name" width="100%"/>
+      <mx:ComboBox id="usersCB"
+        dataProvider="{_users}"
+        change="_currentUser = User(usersCB.selectedItem)"
+        labelFunction="getUserName"
+        width="100%"/>
+      <mx:Panel title="Contacts" width="100%" height="100%">
         <mx:List id="contactsList"
-dataProvider="{Company(companiesList.selectedItem).contacts}"
+          dataProvider="{_currentUser.contacts}"
           labelFunction="getContactName"
           width="100%" height="100%"/>
       </mx:Panel>
-    </mx:VDividedBox>
+    </mx:VBox>
     <mx:VDividedBox width="100%" height="100%">
       <mx:Panel title="Tasks" width="100%" height="50%">
         <mx:List id="taskList"
