@@ -33,8 +33,6 @@
     return contact == null ? "" :
       contact.firstName + " " + contact.lastName;
   }
-  
-  
 
   public function buildTestData():void {
     var emailChannel:Channel = new Channel("email", 640000);
