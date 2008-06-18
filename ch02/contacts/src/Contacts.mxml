@@ -34,6 +34,8 @@
         <last_name>Patten</last_name>
       </contact>
     </contacts>;
+    
+  //http://twitter.com/statuses/friends_timeline/peterarmstrong.xml
   
   private function getContactName(contact:XML):String {
     return contact.first_name + " " + contact.last_name;

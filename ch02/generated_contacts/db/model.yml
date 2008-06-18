@@ -16,6 +16,7 @@ contact:
 - twitter: string
 - blog: string
 - notes: text
+- birthday: date
 - belongs_to: [user, company]
 - has_one: [address]
 - has_many: [tasks, messages]
@@ -47,6 +48,6 @@ channel:
 task:
 - name: string
 - notes: text
-- due: date
+- due: datetime
 - completed: boolean
 - belongs_to: [user, contact]

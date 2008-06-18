@@ -23,6 +23,7 @@
     address.contact = Contact(contactComboBox.selectedItem);
     address.company = Company(companyComboBox.selectedItem);
     address.create(onAddressCreate);
+    
 //    Ruboss.models.create(address, onAddressCreate);
   }
 
