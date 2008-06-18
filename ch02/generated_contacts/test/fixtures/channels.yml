@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+channel_one:
+  name: Channel1NameString
+  character_limit: 1
+
+channel_two:
+  name: Channel2NameString
+  character_limit: 1
+
+channel_three:
+  name: Channel3NameString
+  character_limit: 1
+
+channel_four:
+  name: Channel4NameString
+  character_limit: 1

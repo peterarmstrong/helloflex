@@ -1,0 +1,20 @@
+<h1>Editing channel</h1>
+
+<% form_for(@channel) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :character_limit %><br />
+    <%= f.text_field :character_limit %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @channel %> |
+<%= link_to 'Back', channels_path %>

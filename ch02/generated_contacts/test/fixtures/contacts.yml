@@ -1,0 +1,61 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+contact_one:
+  first_name: Contact1FirstNameString
+  last_name: Contact1LastNameString
+  email: Contact1EmailString
+  home_phone: Contact1HomePhoneString
+  mobile_phone: Contact1MobilePhoneString
+  work_phone: Contact1WorkPhoneString
+  skype: Contact1SkypeString
+  facebook: Contact1FacebookString
+  twitter: Contact1TwitterString
+  blog: Contact1BlogString
+  notes: Contact1NotesText
+  user: user_one
+  company: company_one
+
+contact_two:
+  first_name: Contact2FirstNameString
+  last_name: Contact2LastNameString
+  email: Contact2EmailString
+  home_phone: Contact2HomePhoneString
+  mobile_phone: Contact2MobilePhoneString
+  work_phone: Contact2WorkPhoneString
+  skype: Contact2SkypeString
+  facebook: Contact2FacebookString
+  twitter: Contact2TwitterString
+  blog: Contact2BlogString
+  notes: Contact2NotesText
+  user: user_two
+  company: company_two
+
+contact_three:
+  first_name: Contact3FirstNameString
+  last_name: Contact3LastNameString
+  email: Contact3EmailString
+  home_phone: Contact3HomePhoneString
+  mobile_phone: Contact3MobilePhoneString
+  work_phone: Contact3WorkPhoneString
+  skype: Contact3SkypeString
+  facebook: Contact3FacebookString
+  twitter: Contact3TwitterString
+  blog: Contact3BlogString
+  notes: Contact3NotesText
+  user: user_three
+  company: company_three
+
+contact_four:
+  first_name: Contact4FirstNameString
+  last_name: Contact4LastNameString
+  email: Contact4EmailString
+  home_phone: Contact4HomePhoneString
+  mobile_phone: Contact4MobilePhoneString
+  work_phone: Contact4WorkPhoneString
+  skype: Contact4SkypeString
+  facebook: Contact4FacebookString
+  twitter: Contact4TwitterString
+  blog: Contact4BlogString
+  notes: Contact4NotesText
+  user: user_four
+  company: company_four
