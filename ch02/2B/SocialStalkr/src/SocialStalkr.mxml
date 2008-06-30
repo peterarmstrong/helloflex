@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+  layout="vertical"
+  backgroundGradientColors="[#CCCCCC, #FFFFFF]"
+  paddingBottom="5" paddingTop="5"
+  paddingLeft="5" paddingRight="5">
+<mx:Script><![CDATA[
+  import mx.rpc.events.ResultEvent;
+
+  [Bindable]
+  private var _twitterUser:XML;
+
+  [Bindable]
+  private var _twitterUserTweets:XMLList;
+
+  private function loadTwitterUser():void {
+    twitterUserTimelineSvc.url =
+      "http://twitter.com/statuses/user_timeline/" +
+      twitterName.text + ".xml";
+    twitterUserTimelineSvc.send();
+    twitterFriendsSvc.url =
+      "http://twitter.com/statuses/friends/" +
+      twitterName.text + ".xml";
+    twitterFriendsSvc.send();
+  }
+
+  private function handleTwitterUserTimelineSvcResult(
+    event:ResultEvent):void { 
+    var resultXML:XML = XML(event.result);
+    _twitterUserTweets = resultXML.children();
+    _twitterUser = XML(_twitterUserTweets[0].user);
+  }
+]]></mx:Script>
+  <mx:HTTPService id="twitterUserTimelineSvc"
+    resultFormat="e4x"
+    result="handleTwitterUserTimelineSvcResult(event)"/>
+    
+  <mx:HTTPService id="twitterFriendsSvc" resultFormat="e4x"/>
+  <mx:XMLListCollection id="twitterFriendsXLC" 
+   source="{XMLList(twitterFriendsSvc.lastResult.children())}"/>
+    
+  <mx:ApplicationControlBar width="100%">
+    <mx:Label text="Twitter Name:"/>
+    <mx:TextInput id="twitterName" width="300"
+      text="peterarmstrong"
+      enter="loadTwitterUser()"/>
+    <mx:Button label="Load" click="loadTwitterUser()"/>
+  </mx:ApplicationControlBar>
+  
+  <mx:List id="selectedUserTweetList"
+    width="100%" height="30%"
+    labelField="text"
+    dataProvider="{_twitterUserTweets}"/>
+    
+  <mx:Panel width="100%" height="70%"
+    title="{_twitterUser.name} is Following">
+    <mx:List id="usersList" width="100%" height="100%"
+      backgroundAlpha="0" borderStyle="none"
+      wordWrap="true"
+      paddingTop="0" paddingBottom="0"
+      paddingLeft="0" paddingRight="0"
+      dataProvider="{twitterFriendsXLC}"
+      >
+      <mx:itemRenderer>
+        <mx:Component>
+          <mx:HBox>
+            <mx:Image width="48" height="48"
+              source="{data.profile_image_url}"/>
+            <mx:VBox>
+              <mx:Label text="{data.name}"/>
+              <mx:Label fontStyle="italic"
+                text="({data.screen_name})"/>
+            </mx:VBox>
+          </mx:HBox>
+        </mx:Component> 
+      </mx:itemRenderer>
+    </mx:List>
+  </mx:Panel>
+</mx:Application>
