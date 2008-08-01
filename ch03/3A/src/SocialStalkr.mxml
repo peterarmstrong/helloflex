@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+  xmlns:components="com.socialstalkr.components.*"
+  layout="vertical"
+  backgroundGradientColors="[#CCCCCC, #FFFFFF]"
+  paddingBottom="5" paddingTop="5"
+  paddingLeft="5" paddingRight="5">
+<mx:Script><![CDATA[
+  private static const BLURB:String =
+    "This is the MIT-licensed code for the Hello! Flex 3" +
+    " (http://manning.com) book example." +
+    " Code copyright (c) 2008 Peter Armstrong and" +
+    " Dima Berastau.";
+]]></mx:Script>
+  <mx:ApplicationControlBar width="100%">
+    <mx:Label text="Twitter Name:"/>
+    <mx:TextInput id="twitterName" width="300"
+      text="peterarmstrong"
+      enter="twitterBox.loadTwitterUser()"/>
+    <mx:Button label="Load"
+      click="twitterBox.loadTwitterUser()"/>
+  </mx:ApplicationControlBar>
+  
+  <mx:HBox width="100%" height="100%">
+    <components:MapPanel id="mapPanel"/>
+    <components:TwitterBox id="twitterBox"
+locateTweet="mapPanel.locateTweet(twitterBox.selectedFriend)"/>
+  </mx:HBox>
+  <mx:HBox horizontalAlign="left">
+    <mx:Image
+source="http://l.yimg.com/us.yimg.com/i/us/nt/bdg/websrv_120_1.gif"/>
+    <mx:Label text="{BLURB}"/>
+  </mx:HBox>
+</mx:Application>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+  width="300" height="100%">
+<mx:Metadata>
+  [Event("locateTweet")]
+</mx:Metadata>
+<mx:Script><![CDATA[
+  import mx.controls.List;
+  import mx.events.ListEvent;
+  import mx.rpc.events.ResultEvent;
+  import mx.collections.ArrayCollection;
+
+  [Bindable]
+  public var twitterName:String;
+
+  [Bindable]
+  public var selectedFriend:XML;
+
+  [Bindable]
+  private var _twitterUser:XML;
+
+  [Bindable]
+  private var _twitterUserTweets:XMLList;
+  
+  [Bindable]
+  private var _selectedFriend:XML;  
+
+  [Bindable]
+  private var _selectedFriendTweets:XMLList;  
+
+  public function loadTwitterUser():void {
+    twitterUserTimelineSvc.url =
+      "http://twitter.com/statuses/user_timeline/" +
+      twitterName + ".xml";
+    twitterUserTimelineSvc.send();
+    twitterFriendsSvc.url =
+      "http://twitter.com/statuses/friends/" +
+      twitterName + ".xml";
+    twitterFriendsSvc.send();
+  }
+
+  private function onUserSelect(event:ListEvent):void {
+    _selectedFriend =
+      XML(List(event.currentTarget).selectedItem);
+    twitterFriendTimelineSvc.url =
+      "http://twitter.com/statuses/user_timeline/" +
+      _selectedFriend.screen_name + ".xml";
+    twitterFriendTimelineSvc.send();
+  }
+
+  private function handleTwitterUserTimelineSvcResult(
+    event:ResultEvent):void { 
+    var resultXML:XML = XML(event.result);
+    _twitterUserTweets = resultXML.children();
+    _twitterUser = XML(_twitterUserTweets[0].user);
+  }
+
+  private function handleTwitterFriendTimelineSvcResult(
+    event:ResultEvent):void {
+    var resultXML:XML = XML(event.result);
+    _selectedFriendTweets = resultXML.children(); 
+    _selectedFriend = XML(_selectedFriendTweets[0].user);
+  }
+  
+  private function formatTweet(item:Object):String {
+    var status:XML = XML(item);
+    return status.text + " at " + dateFormatter.format(
+      dateFromTwitterDate(status.created_at));
+  }
+
+  private function dateFromTwitterDate(twDate:String):Date {
+    return new Date(
+        twDate.substr(0,10) +
+        " " + twDate.substr(twDate.length - 4, twDate.length) +
+        " " + twDate.substr(11, 8));
+  }
+  
+  private function dispatchLocateTweet():void {
+    selectedFriend = XML(selectedFriendTweetList.selectedItem);
+    this.dispatchEvent(new Event("locateTweet"));
+  }
+]]></mx:Script>
+  <mx:DateFormatter id="dateFormatter"
+    formatString="L:NN A on EEEE, MMM. D"/>
+
+  <mx:HTTPService id="twitterUserTimelineSvc"
+    resultFormat="e4x"
+    result="handleTwitterUserTimelineSvcResult(event)"/>
+    
+  <mx:HTTPService id="twitterFriendsSvc" resultFormat="e4x"/>
+  <mx:XMLListCollection id="twitterFriendsXLC" 
+   source="{XMLList(twitterFriendsSvc.lastResult.children())}"/>
+
+  <mx:HTTPService id="twitterFriendTimelineSvc"
+    resultFormat="e4x"
+    result="handleTwitterFriendTimelineSvcResult(event)"/>
+  <mx:Panel width="100%"
+  title="{_twitterUser.name} ({_twitterUser.screen_name})">
+    <mx:Image width="48" height="48"
+      source="{_twitterUser.profile_image_url}"/>
+    <mx:List id="selectedUserTweetList"
+      width="100%" height="150"
+      labelField="text"
+      alternatingItemColors="[#EEEEEE, #FFFFFF]"
+      wordWrap="true"
+      variableRowHeight="true"
+      labelFunction="formatTweet"
+      change="dispatchLocateTweet()"
+      dataProvider="{_twitterUserTweets}"/>
+  </mx:Panel>
+
+  <mx:Panel width="100%" height="250"
+    title="{_twitterUser.name} is Following">
+    <mx:List id="usersList" width="100%" height="100%"
+      backgroundAlpha="0" borderStyle="none"
+      wordWrap="true"
+      paddingTop="0" paddingBottom="0"
+      paddingLeft="0" paddingRight="0"
+      dataProvider="{twitterFriendsXLC}"
+      change="onUserSelect(event)"
+itemRenderer="com.socialstalkr.components.UserListItemRenderer"/>
+  </mx:Panel>
+
+  <mx:Panel visible="{_selectedFriend != null}"
+    width="100%" height="100%"
+    title="{_selectedFriend.name}'s Tweets">
+    <mx:List 
+      id="selectedFriendTweetList"
+      width="100%" height="100%"
+      alternatingItemColors="[#EEEEEE, #FFFFFF]"
+      borderStyle="none"
+      paddingTop="0" paddingBottom="0"
+      paddingLeft="0" paddingRight="0"
+      labelFunction="formatTweet"
+      dataProvider="{_selectedFriendTweets}"
+      change="dispatchLocateTweet()"
+      wordWrap="true"
+      variableRowHeight="true"/>
+  </mx:Panel>
+</mx:VBox>
