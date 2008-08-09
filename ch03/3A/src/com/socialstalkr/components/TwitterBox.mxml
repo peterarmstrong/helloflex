@@ -11,10 +11,10 @@
   import mx.collections.ArrayCollection;
 
   [Bindable]
-  public var twitterName:String;
-
-  [Bindable]
   public var selectedFriend:XML;
+  
+  [Bindable]
+  public var selectedTweet:XML;
 
   [Bindable]
   private var _twitterUser:XML;
@@ -28,7 +28,7 @@
   [Bindable]
   private var _selectedFriendTweets:XMLList;  
 
-  public function loadTwitterUser():void {
+  public function loadTwitterUser(twitterName:String):void {
     twitterUserTimelineSvc.url =
       "http://twitter.com/statuses/user_timeline/" +
       twitterName + ".xml";
@@ -75,9 +75,9 @@
         " " + twDate.substr(11, 8));
   }
   
-  private function dispatchLocateTweet():void {
-    selectedFriend = XML(selectedFriendTweetList.selectedItem);
-    this.dispatchEvent(new Event("locateTweet"));
+  private function locateTweet(tweet:XML):void {
+    selectedTweet = tweet;
+    dispatchEvent(new Event("locateTweet"));
   }
 ]]></mx:Script>
   <mx:DateFormatter id="dateFormatter"
@@ -105,7 +105,7 @@
       wordWrap="true"
       variableRowHeight="true"
       labelFunction="formatTweet"
-      change="dispatchLocateTweet()"
+change="locateTweet(XML(selectedUserTweetList.selectedItem))"
       dataProvider="{_twitterUserTweets}"/>
   </mx:Panel>
 
@@ -133,7 +133,7 @@ itemRenderer="com.socialstalkr.components.UserListItemRenderer"/>
       paddingLeft="0" paddingRight="0"
       labelFunction="formatTweet"
       dataProvider="{_selectedFriendTweets}"
-      change="dispatchLocateTweet()"
+change="locateTweet(XML(selectedFriendTweetList.selectedItem))"
       wordWrap="true"
       variableRowHeight="true"/>
   </mx:Panel>
