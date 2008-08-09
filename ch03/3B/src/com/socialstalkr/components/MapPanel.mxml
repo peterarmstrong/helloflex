@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml"
+  title="Locations" width="100%" height="100%"
+  creationComplete="onCreationComplete()">
+<mx:Script><![CDATA[
+  import mx.events.ResizeEvent;
+
+  import com.yahoo.maps.api.MapTypes;
+  import com.yahoo.maps.api.YahooMapEvent;
+  import com.yahoo.maps.api.YahooMap;
+  import com.yahoo.maps.api.markers.Marker;
+  import com.yahoo.maps.api.core.location.Address;
+  import com.yahoo.maps.api.core.location.LatLon;
+  import com.yahoo.maps.webservices.geocoder.GeocoderResult;
+  import com.yahoo.maps.webservices.geocoder.events.GeocoderEvent;
+
+  import com.socialstalkr.components.TwitterMarker;
+  import com.socialstalkr.model.SocialStalkrModelLocator;
+  
+  [Bindable]
+  private var _model:SocialStalkrModelLocator =
+    SocialStalkrModelLocator.instance;
+
+  private static const YAHOO_APP_ID:String =
+"TWLRFYTV34GhMOfRCZubCe_LcKgnCKtK06BYJy3WNYSg0d.MaEk1483y4_OpzxjlJEk-";
+  
+  [Bindable]
+  private var _map:YahooMap;
+  
+  private function onCreationComplete():void {
+    _map = new YahooMap();
+    _map.addEventListener(
+      YahooMapEvent.MAP_INITIALIZE, onMapInitialize);
+    _map.init(YAHOO_APP_ID, mapContainer.width,
+      mapContainer.height);
+    _map.addPanControl();
+    _map.addScaleBar();
+    _map.addTypeWidget();
+    _map.addZoomWidget();
+
+    mapContainer.addEventListener(ResizeEvent.RESIZE,
+      onMapResize);
+    mapContainer.addChild(_map);
+  }
+
+  public function locateTweet(tweet:XML):void {
+    _map.markerManager.removeAllMarkers();
+    var text:String = tweet.text;
+    var points:Array = text.match(/@{(.*)}/);
+    var profileImageUrl:String = tweet.user.profile_image_url;
+    var name:String = tweet.user.name;
+    var location:String = tweet.user.location;
+  
+    if (points != null && points.length > 0) {
+      var address:Address = new Address(points[1]);
+      var marker:Marker = new TwitterMarker(
+        profileImageUrl, text.replace(points[0], points[1]));
+      marker.address = address;
+      _map.markerManager.addMarker(marker);
+      geocodeAddress(address);
+    }
+  }
+  
+  private function onMapResize(event:ResizeEvent):void {
+    _map.setSize(mapContainer.width, mapContainer.height);
+  }
+
+  private function onMapInitialize(event:YahooMapEvent):void {
+    _map.zoomLevel = 3;
+    var address:Address =
+      new Address("21 Water Street, Vancouver, BC");
+    geocodeAddress(address);
+  }
+
+  private function geocodeAddress(address:Address):void {
+    address.addEventListener(
+      GeocoderEvent.GEOCODER_SUCCESS, onGeocoderSuccess);
+    address.geocode();
+  }
+  
+  private function onGeocoderSuccess(event:GeocoderEvent):void {
+    var result:GeocoderResult =
+      event.data.firstResult as GeocoderResult;
+    _map.centerLatLon = result.latlon;
+  }
+]]></mx:Script>
+  <mx:UIComponent id="mapContainer" width="100%" height="100%"/>
+</mx:Panel>
