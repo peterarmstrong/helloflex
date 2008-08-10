@@ -8,10 +8,6 @@ package com.socialstalkr.control {
   
   public class SocialStalkrController extends FrontController {
     public function SocialStalkrController() {
-      initializeCommands();
-    }
-
-    private function initializeCommands():void {
       addCommand(EventNames.SHOW_USER_FRIENDS, ShowUserFriends);
       addCommand(EventNames.SHOW_USER_TWEETS, ShowUserTweets);
       addCommand(EventNames.SHOW_FRIEND_TWEETS, ShowFriendTweets);

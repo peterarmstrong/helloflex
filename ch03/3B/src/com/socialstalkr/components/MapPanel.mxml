@@ -15,11 +15,6 @@
   import com.yahoo.maps.webservices.geocoder.events.GeocoderEvent;
 
   import com.socialstalkr.components.TwitterMarker;
-  import com.socialstalkr.model.SocialStalkrModelLocator;
-  
-  [Bindable]
-  private var _model:SocialStalkrModelLocator =
-    SocialStalkrModelLocator.instance;
 
   private static const YAHOO_APP_ID:String =
 "TWLRFYTV34GhMOfRCZubCe_LcKgnCKtK06BYJy3WNYSg0d.MaEk1483y4_OpzxjlJEk-";

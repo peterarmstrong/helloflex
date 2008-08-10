@@ -11,9 +11,6 @@
   import mx.collections.ArrayCollection;
 
   [Bindable]
-  public var selectedFriend:XML;
-  
-  [Bindable]
   public var selectedTweet:XML;
 
   [Bindable]
