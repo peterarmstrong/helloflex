@@ -20,7 +20,6 @@
     <mx:Button label="Load"
       click="twitterBox.loadTwitterUser(twitterName.text)"/>
   </mx:ApplicationControlBar>
-  
   <mx:HBox width="100%" height="100%">
     <components:MapPanel id="mapPanel"/>
     <components:TwitterBox id="twitterBox"

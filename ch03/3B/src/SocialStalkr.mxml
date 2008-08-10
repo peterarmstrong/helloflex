@@ -24,14 +24,12 @@
   }
 ]]></mx:Script>
   <control:SocialStalkrController id="controller"/>
-
   <mx:ApplicationControlBar width="100%">
     <mx:Label text="Twitter Name:"/>
     <mx:TextInput id="twitterName" width="300"
       text="peterarmstrong" enter="loadTwitterUser()"/>
     <mx:Button label="Load" click="loadTwitterUser()"/>
   </mx:ApplicationControlBar>
-  
   <mx:HBox width="100%" height="100%">
     <components:MapPanel id="mapPanel"/>
     <components:TwitterBox id="twitterBox"/>
