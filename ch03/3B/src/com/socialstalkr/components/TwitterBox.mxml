@@ -12,9 +12,6 @@
   import com.socialstalkr.control.EventNames;
   import com.socialstalkr.model.SocialStalkrModelLocator;
   import com.socialstalkr.util.CairngormUtils;
-    
-  [Bindable]
-  public var twitterName:String;
 
   [Bindable]
   private var _model:SocialStalkrModelLocator =
