@@ -13,11 +13,5 @@ package com.socialstalkr.command {
     public function execute(event:CairngormEvent):void {
       Application.application.mapPanel.locateTweet(event.data);
     }
-  
-    public function result(event:Object):void {
-    }
-  
-    public function fault(event:Object):void {
-    }
   }
 }
