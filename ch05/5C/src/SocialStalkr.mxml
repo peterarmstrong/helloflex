@@ -45,11 +45,24 @@ source="http://l.yimg.com/us.yimg.com/i/us/nt/bdg/websrv_120_1.gif"/>
       </mx:AddChild>
     </mx:State>
   </mx:states>
-  <mx:Move id="initialMove" yFrom="0" yTo="{userBar.y}"
-    duration="250"/>
+  <mx:Parallel id="initialEffect">
+    <mx:Sequence>
+      <mx:Move yFrom="0" yTo="{userBar.y}"
+        duration="300"/>
+      <mx:Move yFrom="{userBar.y}" yTo="{userBar.y - 100}"
+        duration="200"/>
+      <mx:Move yFrom="{userBar.y - 100}" yTo="{userBar.y}"
+        duration="200"/>
+      <mx:Move yFrom="{userBar.y}" yTo="{userBar.y - 50}"
+        duration="100"/>
+      <mx:Move yFrom="{userBar.y - 50}" yTo="{userBar.y}"
+        duration="100"/>
+    </mx:Sequence>
+    <mx:Blur blurYFrom="8" blurYTo="0" duration="900"/>
+  </mx:Parallel>
   <control:SocialStalkrController id="controller"/>
   <mx:ApplicationControlBar id="userBar"
-    creationCompleteEffect="{initialMove}">
+    creationCompleteEffect="{initialEffect}">
     <mx:Label text="Twitter Name:"/>
     <mx:TextInput id="twitterName" width="300"
       text="peterarmstrong" enter="loadTwitterUser()"/>
