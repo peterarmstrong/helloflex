@@ -34,19 +34,19 @@
   <mx:states>
     <mx:State name="showMainApp">
       <mx:AddChild>
-        <mx:HBox id="mainBox" x="0" y="40"
-          width="100%" height="{height - 60}">
-          <components:MapPanel id="mapPanel"/>
-          <components:TwitterBox id="twitterBox"/>
-        </mx:HBox>
-      </mx:AddChild>
-      <mx:AddChild>
-        <mx:HBox id="footerBox" horizontalAlign="left"
-          x="0" y="{height - 18}" width="100%" height="18">
-          <mx:Image
+        <mx:VBox id="mainBox" x="0" y="40"
+          width="100%" height="{height - 40}">
+          <mx:HBox width="100%" height="100%">
+            <components:MapPanel id="mapPanel"/>
+            <components:TwitterBox id="twitterBox"/>
+          </mx:HBox>
+          <mx:HBox id="footerBox" horizontalAlign="left"
+            width="100%">
+            <mx:Image
 source="http://l.yimg.com/us.yimg.com/i/us/nt/bdg/websrv_120_1.gif"/>
-          <mx:Label text="{BLURB}"/>
-        </mx:HBox>
+            <mx:Label text="{BLURB}"/>
+          </mx:HBox>
+        </mx:VBox>
       </mx:AddChild>
     </mx:State>
   </mx:states>
