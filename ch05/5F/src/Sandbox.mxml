@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+  styleName="plain" initialize="init()">
+  <mx:Script>
+    <![CDATA[
+      [Bindable]
+      private var username:String = "peterarmstrong";
+      
+      [Bindable]
+      private var tweets:XML =
+<tweets>
+  <tweet user={username}>At WorkSpace, working.</tweet>
+  <tweet user="dimaberastau">Porting Ruboss to Merb.</tweet>
+</tweets>;
+
+      [Bindable]
+      private var debugText:String = "";
+
+      private function init():void {
+        debugTweets("BEFORE");
+        tweets.appendChild(
+          <tweet user={username}>Done for the day!</tweet>);
+        tweets.@date = new Date();
+        debugTweets("AFTER");
+      }
+      
+      private function debugTweets(title:String):void {
+        debugText += "[" + title + "] tweets:\n";
+        debugText += tweets.toXMLString() + "\n";
+        for each (var tweet:XML in tweets.children()) {
+          debugText += tweet.@user + ": " + tweet.text() + "\n";
+        }
+      }
+    ]]>
+  </mx:Script>
+  <mx:Text text="{debugText}" width="100%" height="100%"/>
+  <mx:DataGrid width="100%"
+    dataProvider="{tweets.tweet.(@user == 'peterarmstrong')}"/>
+</mx:Application>
