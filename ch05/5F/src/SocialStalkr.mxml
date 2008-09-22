@@ -2,6 +2,7 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
   xmlns:components="com.socialstalkr.components.*"
   xmlns:control="com.socialstalkr.control.*"
+  initialize="init()"
   layout="absolute"
   backgroundGradientColors="[#CCCCCC, #FFFFFF]"
   paddingBottom="5" paddingTop="5"
@@ -16,7 +17,12 @@
     " (http://manning.com) book example." +
     " Code copyright (c) 2008 Peter Armstrong and" +
     " Dima Berastau.";
-    
+  
+  private function init():void {
+    userBar.x = width / 2 - 240;
+    userBar.y = height / 2 - 18;
+  }
+
   private function loadTwitterUser():void {
     CairngormUtils.dispatchEvent(EventNames.SHOW_USER_TWEETS,
       twitterName.text);
@@ -30,9 +36,9 @@
       <!--
       <mx:SetProperty target="{userBar}" name="percentWidth"
         value="100"/>
-      -->
       <mx:SetProperty target="{userBar}" name="x" value="0"/>
       <mx:SetProperty target="{userBar}" name="y" value="0"/>
+      -->
       <mx:AddChild>
         <mx:HBox id="mainBox" x="0" y="40"
           width="100%" height="{height - 60}">
@@ -58,9 +64,9 @@ source="http://l.yimg.com/us.yimg.com/i/us/nt/bdg/websrv_120_1.gif"/>
             yTo="0"/>
           <mx:Move target="{userBar}" xFrom="{userBar.x}"
             xTo="0"/>
+          <!--
           <mx:SetPropertyAction target="{userBar}" name="x"/>
           <mx:SetPropertyAction target="{userBar}" name="y"/>
-          <!--
           <mx:SetPropertyAction target="{userBar}" name="percentWidth"/>
           -->
         </mx:Sequence>
@@ -72,8 +78,7 @@ source="http://l.yimg.com/us.yimg.com/i/us/nt/bdg/websrv_120_1.gif"/>
     duration="900" easingFunction="Bounce.easeOut"/>
   <control:SocialStalkrController id="controller"/>
   <mx:ApplicationControlBar id="userBar"
-    x="{width/2 - 240}" y="{height/2 - 18}"
-    width="480" height="36"
+    width="480"
     creationCompleteEffect="{initialEffect}">
     <mx:Label text="Twitter Name:"/>
     <mx:TextInput id="twitterName" width="100%"
