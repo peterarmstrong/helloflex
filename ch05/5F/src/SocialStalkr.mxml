@@ -27,6 +27,12 @@
 ]]></mx:Script>
   <mx:states>
     <mx:State name="showMainApp">
+      <!--
+      <mx:SetProperty target="{userBar}" name="percentWidth"
+        value="100"/>
+      -->
+      <mx:SetProperty target="{userBar}" name="x" value="0"/>
+      <mx:SetProperty target="{userBar}" name="y" value="0"/>
       <mx:AddChild>
         <mx:HBox id="mainBox" x="0" y="40"
           width="100%" height="{height - 60}">
@@ -47,11 +53,16 @@ source="http://l.yimg.com/us.yimg.com/i/us/nt/bdg/websrv_120_1.gif"/>
   <mx:transitions>
     <mx:Transition fromState="" toState="showMainApp">
       <mx:Parallel duration="500">
-        <mx:Sequence>
+        <mx:Sequence target="{userBar}">
           <mx:Move target="{userBar}" yFrom="{userBar.y}"
             yTo="0"/>
           <mx:Move target="{userBar}" xFrom="{userBar.x}"
             xTo="0"/>
+          <mx:SetPropertyAction target="{userBar}" name="x"/>
+          <mx:SetPropertyAction target="{userBar}" name="y"/>
+          <!--
+          <mx:SetPropertyAction target="{userBar}" name="percentWidth"/>
+          -->
         </mx:Sequence>
         <mx:WipeUp target="{mainBox}"/>
       </mx:Parallel>
