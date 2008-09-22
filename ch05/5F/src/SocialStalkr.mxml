@@ -2,9 +2,7 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
   xmlns:components="com.socialstalkr.components.*"
   xmlns:control="com.socialstalkr.control.*"
-  layout="vertical"
-  verticalAlign="middle"
-  horizontalAlign="center"
+  layout="absolute"
   backgroundGradientColors="[#CCCCCC, #FFFFFF]"
   paddingBottom="5" paddingTop="5"
   paddingLeft="5" paddingRight="5">
@@ -30,13 +28,15 @@
   <mx:states>
     <mx:State name="showMainApp">
       <mx:AddChild>
-        <mx:HBox id="mainBox" width="100%" height="100%">
+        <mx:HBox id="mainBox" x="0" y="40"
+          width="100%" height="{height - 60}">
           <components:MapPanel id="mapPanel"/>
           <components:TwitterBox id="twitterBox"/>
         </mx:HBox>
       </mx:AddChild>
       <mx:AddChild>
-        <mx:HBox id="footerBox" horizontalAlign="left">
+        <mx:HBox id="footerBox" horizontalAlign="left"
+          x="0" y="{height - 18}" width="100%" height="18">
           <mx:Image
 source="http://l.yimg.com/us.yimg.com/i/us/nt/bdg/websrv_120_1.gif"/>
           <mx:Label text="{BLURB}"/>
@@ -44,7 +44,6 @@ source="http://l.yimg.com/us.yimg.com/i/us/nt/bdg/websrv_120_1.gif"/>
       </mx:AddChild>
     </mx:State>
   </mx:states>
-  <!-- this shows flicker because of vertical layout -->
   <mx:transitions>
     <mx:Transition fromState="" toState="showMainApp">
       <mx:Parallel>
@@ -62,9 +61,11 @@ source="http://l.yimg.com/us.yimg.com/i/us/nt/bdg/websrv_120_1.gif"/>
     duration="900" easingFunction="Bounce.easeOut"/>
   <control:SocialStalkrController id="controller"/>
   <mx:ApplicationControlBar id="userBar"
+    x="{width/2 - 240}" y="{height/2 - 18}"
+    width="480" height="36"
     creationCompleteEffect="{initialEffect}">
     <mx:Label text="Twitter Name:"/>
-    <mx:TextInput id="twitterName" width="300"
+    <mx:TextInput id="twitterName" width="100%"
       text="peterarmstrong" enter="loadTwitterUser()"/>
     <mx:Button label="Load" click="loadTwitterUser()"/>
   </mx:ApplicationControlBar>
