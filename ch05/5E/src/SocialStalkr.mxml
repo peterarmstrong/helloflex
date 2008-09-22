@@ -29,8 +29,6 @@
 ]]></mx:Script>
   <mx:states>
     <mx:State name="showMainApp">
-      <mx:SetProperty target="{userBar}" name="percentWidth"
-        value="100"/>
       <mx:AddChild>
         <mx:HBox id="mainBox" width="100%" height="100%">
           <components:MapPanel id="mapPanel"/>
@@ -46,9 +44,18 @@ source="http://l.yimg.com/us.yimg.com/i/us/nt/bdg/websrv_120_1.gif"/>
       </mx:AddChild>
     </mx:State>
   </mx:states>
+  <!-- this shows flicker because of vertical layout -->
   <mx:transitions>
     <mx:Transition fromState="" toState="showMainApp">
-      <mx:WipeUp duration="1000" target="{mainBox}"/>
+      <mx:Parallel>
+        <mx:Sequence>
+          <mx:Move target="{userBar}" yFrom="{userBar.y}"
+            yTo="0"/>
+          <mx:Move target="{userBar}" xFrom="{userBar.x}"
+            xTo="0"/>
+        </mx:Sequence>
+        <mx:WipeUp duration="1000" target="{mainBox}"/>
+      </mx:Parallel>
     </mx:Transition>
   </mx:transitions>
   <mx:Move id="initialEffect" yFrom="0" yTo="{userBar.y}"
