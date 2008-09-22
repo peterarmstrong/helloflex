@@ -60,6 +60,7 @@ source="http://l.yimg.com/us.yimg.com/i/us/nt/bdg/websrv_120_1.gif"/>
             yTo="0"/>
           <mx:Move target="{userBar}" xFrom="{userBar.x}"
             xTo="0"/>
+          <mx:Resize target="{userBar}" widthTo="{width}"/>
           <mx:SetPropertyAction target="{userBar}"
             name="percentWidth"/>
         </mx:Sequence>
