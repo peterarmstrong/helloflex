@@ -46,14 +46,14 @@ source="http://l.yimg.com/us.yimg.com/i/us/nt/bdg/websrv_120_1.gif"/>
   </mx:states>
   <mx:transitions>
     <mx:Transition fromState="" toState="showMainApp">
-      <mx:Parallel>
+      <mx:Parallel duration="500">
         <mx:Sequence>
           <mx:Move target="{userBar}" yFrom="{userBar.y}"
             yTo="0"/>
           <mx:Move target="{userBar}" xFrom="{userBar.x}"
             xTo="0"/>
         </mx:Sequence>
-        <mx:WipeUp duration="1000" target="{mainBox}"/>
+        <mx:WipeUp target="{mainBox}"/>
       </mx:Parallel>
     </mx:Transition>
   </mx:transitions>
