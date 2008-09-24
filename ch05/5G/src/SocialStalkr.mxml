@@ -33,6 +33,8 @@
 ]]></mx:Script>
   <mx:states>
     <mx:State name="showMainApp">
+      <mx:SetProperty target="{userBar}" name="percentWidth"
+        value="100"/>
       <mx:AddChild>
         <mx:VBox id="mainBox" x="0" y="40"
           width="100%" height="{height - 40}">
@@ -48,8 +50,6 @@ source="http://l.yimg.com/us.yimg.com/i/us/nt/bdg/websrv_120_1.gif"/>
           </mx:HBox>
         </mx:VBox>
       </mx:AddChild>
-      <mx:SetProperty target="{userBar}" name="percentWidth"
-        value="100"/>
     </mx:State>
   </mx:states>
   <mx:transitions>
