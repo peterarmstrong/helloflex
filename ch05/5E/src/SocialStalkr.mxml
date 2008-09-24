@@ -56,10 +56,8 @@ source="http://l.yimg.com/us.yimg.com/i/us/nt/bdg/websrv_120_1.gif"/>
     <mx:Transition fromState="" toState="showMainApp">
       <mx:Parallel duration="500">
         <mx:Sequence target="{userBar}">
-          <mx:Move target="{userBar}" yFrom="{userBar.y}"
-            yTo="0"/>
-          <mx:Move target="{userBar}" xFrom="{userBar.x}"
-            xTo="0"/>
+          <mx:Move target="{userBar}" yTo="0"/>
+          <mx:Move target="{userBar}" xTo="0"/>
           <mx:Resize target="{userBar}" widthTo="{width}"/>
           <mx:SetPropertyAction target="{userBar}"
             name="percentWidth"/>
@@ -68,7 +66,7 @@ source="http://l.yimg.com/us.yimg.com/i/us/nt/bdg/websrv_120_1.gif"/>
       </mx:Parallel>
     </mx:Transition>
   </mx:transitions>
-  <mx:Move id="initialEffect" yFrom="0" yTo="{userBar.y}"
+  <mx:Move id="initialEffect" yFrom="0"
     duration="900" easingFunction="Bounce.easeOut"/>
   <control:SocialStalkrController id="controller"/>
   <mx:ApplicationControlBar id="userBar"

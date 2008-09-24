@@ -46,7 +46,7 @@ source="http://l.yimg.com/us.yimg.com/i/us/nt/bdg/websrv_120_1.gif"/>
       </mx:AddChild>
     </mx:State>
   </mx:states>
-  <mx:Move id="initialEffect" yFrom="0" yTo="{userBar.y}"
+  <mx:Move id="initialEffect" yFrom="0"
     duration="900" easingFunction="Bounce.easeOut"/>
   <control:SocialStalkrController id="controller"/>
   <mx:ApplicationControlBar id="userBar"
