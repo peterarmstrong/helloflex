@@ -44,48 +44,58 @@
   <mx:DateFormatter id="dateFormatter"
     formatString="L:NN A on EEEE, MMM. D"/>
 
-  <mx:Panel width="100%"
-title="{_model.twitterUser.name} ({_model.twitterUser.screen_name})">
-    <mx:Image width="48" height="48"
-      source="{_model.twitterUser.profile_image_url}"/>
-    <mx:List id="selectedUserTweetList"
-      width="100%" height="150"
-      labelField="text"
-      alternatingItemColors="[#EEEEEE, #FFFFFF]"
-      wordWrap="true"
-      variableRowHeight="true"
-      labelFunction="formatTweet"
+  <mx:TabNavigator width="100%" height="100%">
+    <mx:VBox width="100%" height="100%" label="User">
+      <mx:HBox width="100%">
+        <mx:Image width="48" height="48"
+          source="{_model.twitterUser.profile_image_url}"/>
+        <mx:VBox width="100%">
+          <mx:Label width="100%"
+            text="{_model.twitterUser.name}"/>
+          <mx:Label width="100%"
+            text="({_model.twitterUser.screen_name})"/>
+        </mx:VBox>
+      </mx:HBox>
+      <mx:List id="selectedUserTweetList"
+        width="100%" height="100%"
+        labelField="text"
+        alternatingItemColors="[#EEEEEE, #FFFFFF]"
+        wordWrap="true"
+        variableRowHeight="true"
+        labelFunction="formatTweet"
 change="locateTweet(XML(selectedUserTweetList.selectedItem))"
-      dataProvider="{_model.twitterUserTweets}"/>
-  </mx:Panel>
-
-  <mx:Panel width="100%" height="250"
-    title="{_model.twitterUser.name} is Following">
-    <mx:List id="usersList" width="100%" height="100%"
-      backgroundAlpha="0" borderStyle="none"
-      wordWrap="true"
-      paddingTop="0" paddingBottom="0"
-      paddingLeft="0" paddingRight="0"
-      dataProvider="{_model.twitterUserFriends}"
-      variableRowHeight="true"
-      change="onUserSelect(event)"
-itemRenderer="com.socialstalkr.components.UserListItemRenderer"/>
-  </mx:Panel>
-
-  <mx:Panel visible="{_model.selectedFriend != null}"
-    width="100%" height="100%"
-    title="{_model.selectedFriend.name}'s Tweets">
-    <mx:List 
-      id="selectedFriendTweetList"
-      width="100%" height="100%"
-      alternatingItemColors="[#EEEEEE, #FFFFFF]"
-      borderStyle="none"
-      paddingTop="0" paddingBottom="0"
-      paddingLeft="0" paddingRight="0"
-      labelFunction="formatTweet"
-      dataProvider="{_model.selectedFriendTweets}"
-change="locateTweet(XML(selectedFriendTweetList.selectedItem))"
-      wordWrap="true"
-      variableRowHeight="true"/>
-  </mx:Panel>
+        dataProvider="{_model.twitterUserTweets}"/>
+    </mx:VBox>
+    <mx:VBox width="100%" height="100%" label="Following">
+      <mx:Panel width="100%" height="250"
+        title="{_model.twitterUser.name} is Following">
+        <mx:List id="usersList" width="100%" height="100%"
+          backgroundAlpha="0" borderStyle="none"
+          wordWrap="true"
+          paddingTop="0" paddingBottom="0"
+          paddingLeft="0" paddingRight="0"
+          dataProvider="{_model.twitterUserFriends}"
+          variableRowHeight="true"
+          change="onUserSelect(event)"
+  itemRenderer="com.socialstalkr.components.UserListItemRenderer"/>
+      </mx:Panel>
+    
+      <mx:Panel visible="{_model.selectedFriend != null}"
+        width="100%" height="100%"
+        title="{_model.selectedFriend.name}'s Tweets">
+        <mx:List 
+          id="selectedFriendTweetList"
+          width="100%" height="100%"
+          alternatingItemColors="[#EEEEEE, #FFFFFF]"
+          borderStyle="none"
+          paddingTop="0" paddingBottom="0"
+          paddingLeft="0" paddingRight="0"
+          labelFunction="formatTweet"
+          dataProvider="{_model.selectedFriendTweets}"
+  change="locateTweet(XML(selectedFriendTweetList.selectedItem))"
+          wordWrap="true"
+          variableRowHeight="true"/>
+      </mx:Panel>
+    </mx:VBox>
+  </mx:TabNavigator>
 </mx:VBox>
