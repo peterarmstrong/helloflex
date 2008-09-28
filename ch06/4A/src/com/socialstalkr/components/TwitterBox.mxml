@@ -67,7 +67,6 @@ change="locateTweet(XML(selectedUserTweetList.selectedItem))"
       paddingTop="0" paddingBottom="0"
       paddingLeft="0" paddingRight="0"
       dataProvider="{_model.twitterUserFriends}"
-      variableRowHeight="true"
       change="onUserSelect(event)"
 itemRenderer="com.socialstalkr.components.UserListItemRenderer"/>
   </mx:Panel>
