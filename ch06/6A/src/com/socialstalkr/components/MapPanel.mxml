@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml"
   title="Locations" width="100%" height="100%"
+    cornerRadius="8"
+    dropShadowEnabled="false"
+    highlightAlphas="0"
+    borderAlpha="1"
+    borderColor="#3D382D"
+    
+    roundedBottomCorners="true"
   creationComplete="onCreationComplete()">
 <mx:Script><![CDATA[
   import mx.events.ResizeEvent;

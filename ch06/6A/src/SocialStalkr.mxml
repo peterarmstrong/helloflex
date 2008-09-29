@@ -3,7 +3,7 @@
   xmlns:components="com.socialstalkr.components.*"
   xmlns:control="com.socialstalkr.control.*"
   layout="vertical"
-  backgroundGradientColors="[#CCCCCC, #FFFFFF]"
+  backgroundGradientColors="[#0F686B, #0F686B]"
   paddingBottom="5" paddingTop="5"
   paddingLeft="5" paddingRight="5">
 <mx:Script><![CDATA[
@@ -24,7 +24,8 @@
   }
 ]]></mx:Script>
   <control:SocialStalkrController id="controller"/>
-  <mx:ApplicationControlBar width="100%">
+  <mx:ApplicationControlBar width="100%"
+    barColor="#A5B040" fillColors="[#A5B040,#A5B040]">
     <mx:Label text="Twitter Name:"/>
     <mx:TextInput id="twitterName" width="300"
       text="peterarmstrong" enter="loadTwitterUser()"/>
