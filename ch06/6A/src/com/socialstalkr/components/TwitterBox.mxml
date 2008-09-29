@@ -46,12 +46,7 @@
 
   <mx:Panel width="100%"
 title="{_model.twitterUser.name} ({_model.twitterUser.screen_name})"
-    cornerRadius="8"
-    dropShadowEnabled="false"
-    highlightAlphas="0"
-    borderAlpha="1"
-    borderColor="#3D382D"
-    roundedBottomCorners="true">
+    styleName="fancyPanel">
     <mx:Image width="48" height="48"
       source="{_model.twitterUser.profile_image_url}"/>
     <mx:List id="selectedUserTweetList"
@@ -59,7 +54,7 @@ title="{_model.twitterUser.name} ({_model.twitterUser.screen_name})"
       borderThickness="0"
       labelField="text"
       dropEnabled="false"
-      alternatingItemColors="[#D6D3AE, #786937]"
+      alternatingItemColors="[#D6D3AE, #FFFFFF]"
       wordWrap="true"
       variableRowHeight="true"
       labelFunction="formatTweet"

@@ -5,7 +5,7 @@
     dropShadowEnabled="false"
     highlightAlphas="0"
     borderAlpha="1"
-    borderColor="#3D382D"
+    borderColor="#0F686B"
     
     roundedBottomCorners="true"
   creationComplete="onCreationComplete()">
