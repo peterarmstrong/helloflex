@@ -1,0 +1,67 @@
+/*
+FF711E -orange
+F9E4B3 -beige
+A68C74 -lgt brown
+4F3B3F -lgt purple
+2E2321 - drk purple
+
+*/
+
+
+/* CSS file */
+global{
+  color:#333333;
+}
+
+Application{
+  backgroundGradientColors:#EEEEEE,#DDDDDD;
+  paddingBottom:5;
+  paddingTop:5;
+  paddingLeft:5;
+  paddingRight:5;
+}
+
+ApplicationControlBar{
+  /*
+  fillColors:#CCCCCC,#CCCCCC;
+  fillAlpha: 1,1;
+  background-alpha:1;
+  */
+  backgroundColor:#DDDDDD;
+  dropShadowEnabled:false;
+}
+
+Button{
+   highlightAlphas: 0, 0;
+   fillAlphas: 1, 1, 1, 1;
+   fillColors: #ff6600, #ff6600, #ff9900, #ff9900;
+   color: #ffffff;
+   textRollOverColor: #ffffff;
+   textSelectedColor: #ff6600;
+   borderColor: #ffffff;
+   themeColor: #ffcc00;
+}
+
+List{
+  /*
+  alternatingItemColors:#D6D3AE, #786937;
+  */
+  borderStyle:none;
+  paddingTop:0;
+  paddingBottom:0;
+  paddingLeft:0;
+  paddingRight:0;
+}
+
+Panel{
+  cornerRadius:8;
+  dropShadowEnabled:true;
+  shadowDirection:center;
+  shadowDistance:0;
+  highlightAlphas:0,0;
+  borderAlpha:1;
+  borderColor:#d2d9e3;
+  roundedBottomCorners:true;
+	color: #333333;
+	backgroundColor: #e0e9f2;
+}

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+  width="300" height="100%">
+<mx:Metadata>
+  [Event("locateTweet")]
+</mx:Metadata>
+<mx:Script><![CDATA[
+  import mx.controls.List;
+  import mx.events.ListEvent;
+  import mx.rpc.events.ResultEvent;
+  import mx.collections.ArrayCollection;
+  import com.socialstalkr.control.EventNames;
+  import com.socialstalkr.model.SocialStalkrModelLocator;
+  import com.socialstalkr.util.CairngormUtils;
+
+  [Bindable]
+  private var _model:SocialStalkrModelLocator =
+    SocialStalkrModelLocator.instance;
+
+  private function onUserSelect(event:ListEvent):void {
+    _model.selectedFriend =
+      XML(List(event.currentTarget).selectedItem);
+    CairngormUtils.dispatchEvent(EventNames.SHOW_FRIEND_TWEETS,
+      _model.selectedFriend);
+  }
+
+  private function formatTweet(item:Object):String {
+    var status:XML = XML(item);
+    return status.text + " at " + dateFormatter.format(
+      dateFromTwitterDate(status.created_at));
+  }
+
+  private function dateFromTwitterDate(twDate:String):Date {
+    return new Date(
+        twDate.substr(0,10) +
+        " " + twDate.substr(twDate.length - 4, twDate.length) +
+        " " + twDate.substr(11, 8));
+  }
+  
+  private function locateTweet(tweet:XML):void {
+    CairngormUtils.dispatchEvent(EventNames.LOCATE_TWEET, tweet);
+  }
+]]></mx:Script>
+  <mx:DateFormatter id="dateFormatter"
+    formatString="L:NN A on EEEE, MMM. D"/>
+
+  <mx:Panel width="100%"
+title="{_model.twitterUser.name} ({_model.twitterUser.screen_name})"
+    styleName="fancyPanel">
+    <mx:Image width="48" height="48"
+      source="{_model.twitterUser.profile_image_url}"/>
+    <mx:List id="selectedUserTweetList"
+      width="100%" height="150"
+      labelField="text"
+      dropEnabled="false"
+      wordWrap="true"
+      variableRowHeight="true"
+      labelFunction="formatTweet"
+      change="locateTweet(XML(selectedUserTweetList.selectedItem))"
+      dataProvider="{_model.twitterUserTweets}"/>
+  </mx:Panel>
+
+  <mx:Panel width="100%" height="250"
+    title="{_model.twitterUser.name} is Following"
+    >
+    <mx:List id="usersList" width="100%" height="100%"
+      wordWrap="true"
+      dataProvider="{_model.twitterUserFriends}"
+      change="onUserSelect(event)"
+itemRenderer="com.socialstalkr.components.UserListItemRenderer"/>
+  </mx:Panel>
+
+  <mx:Panel visible="{_model.selectedFriend != null}"
+    width="100%" height="100%"
+    title="{_model.selectedFriend.name}'s Tweets"
+    >
+    <mx:List 
+      id="selectedFriendTweetList"
+      width="100%" height="100%"
+      
+      labelFunction="formatTweet"
+      dataProvider="{_model.selectedFriendTweets}"
+change="locateTweet(XML(selectedFriendTweetList.selectedItem))"
+      wordWrap="true"
+      variableRowHeight="true"/>
+  </mx:Panel>
+</mx:VBox>
