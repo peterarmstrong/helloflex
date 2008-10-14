@@ -19,7 +19,7 @@
     " Dima Berastau.";
   
   private function init():void {
-    userBar.x = width/2 - 240;
+    userBar.x = width/2 - 325;
     userBar.y = height/2 - 18;
   }
 
@@ -69,12 +69,15 @@ source="http://l.yimg.com/us.yimg.com/i/us/nt/bdg/websrv_120_1.gif"/>
   <mx:Move id="initialEffect" yFrom="0"
     duration="900" easingFunction="Bounce.easeOut"/>
   <control:SocialStalkrController id="controller"/>
-  <mx:ApplicationControlBar id="userBar"
-    width="480"
+  <mx:ApplicationControlBar id="userBar" width="650"
     creationCompleteEffect="{initialEffect}">
     <mx:Label text="Twitter Name:"/>
-    <mx:TextInput id="twitterName" width="300"
+    <mx:TextInput id="twitterName" width="200"
       text="peterarmstrong" enter="loadTwitterUser()"/>
-    <mx:Button label="Load" click="loadTwitterUser()"/>
+    <mx:Label text="Password:"/>
+    <mx:TextInput id="twitterPassword" width="200"
+      text="" displayAsPassword="true"
+      enter="loadTwitterUser()"/>
+    <mx:Button label="Login" click="loadTwitterUser()"/>
   </mx:ApplicationControlBar>
 </mx:Application>
