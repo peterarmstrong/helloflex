@@ -1,9 +1,14 @@
 package com.socialstalkr.model {
-  import mx.collections.XMLListCollection;
   import com.adobe.cairngorm.model.IModelLocator;
+  
+  import mx.collections.XMLListCollection;
   
   [Bindable]
   public class SocialStalkrModelLocator implements IModelLocator {
+    public var username:String;
+    
+    public var password:String;
+    
     public var twitterUser:XML;
 
     public var twitterUserTweets:XMLListCollection;

@@ -40,6 +40,10 @@
   private function locateTweet(tweet:XML):void {
     CairngormUtils.dispatchEvent(EventNames.LOCATE_TWEET, tweet);
   }
+
+  private function postTweet(tweet:String):void {
+    CairngormUtils.dispatchEvent(EventNames.POST_TWEET, tweet);
+  }
 ]]></mx:Script>
   <mx:DateFormatter id="dateFormatter"
     formatString="L:NN A on EEEE, MMM. D"/>
@@ -64,7 +68,7 @@
           text="{140 - postTA.text.length} characters left"
 color="{(postTA.text.length > 140) ? 0xFF0000 : 0x000000}"/>
         <mx:Button enabled="{postTA.text.length &lt;= 140}"
-          label="Submit"/>
+          label="Submit" click="postTweet(postTA.text)"/>
       </mx:VBox>
       <mx:List id="selectedUserTweetList"
         width="100%" height="100%"

@@ -7,5 +7,6 @@ package com.socialstalkr.control {
     public static const SHOW_FRIEND_TWEETS:String =
       "showFriendTweets";
     public static const LOCATE_TWEET:String = "locateTweet";
+    public static const POST_TWEET:String = "postTweet";
   }
 }

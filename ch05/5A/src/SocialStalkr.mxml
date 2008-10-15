@@ -11,6 +11,11 @@
   import com.socialstalkr.control.EventNames;
   import com.socialstalkr.util.CairngormUtils;
   import mx.effects.easing.Bounce;
+  import com.socialstalkr.model.SocialStalkrModelLocator;
+
+  [Bindable]
+  private var _model:SocialStalkrModelLocator =
+    SocialStalkrModelLocator.instance;
 
   private static const BLURB:String =
     "This is the MIT-licensed code for the Hello! Flex 3" +
@@ -24,6 +29,8 @@
   }
 
   private function loadTwitterUser():void {
+    _model.username = twitterName.text;
+    _model.password = twitterPassword.text;
     CairngormUtils.dispatchEvent(EventNames.SHOW_USER_TWEETS,
       twitterName.text);
     CairngormUtils.dispatchEvent(EventNames.SHOW_USER_FRIENDS,

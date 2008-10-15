@@ -1,6 +1,7 @@
 package com.socialstalkr.business {
-  import mx.rpc.IResponder;
   import com.socialstalkr.util.ServiceUtils;
+  
+  import mx.rpc.IResponder;
   
   public class TwitterDelegate {
     private var _responder:IResponder;
@@ -18,6 +19,14 @@ package com.socialstalkr.business {
       ServiceUtils.send(
         "http://twitter.com/statuses/user_timeline/" +
         twitterName + ".xml", _responder);
+    }
+    
+    public function postTweet(twitterName:String,
+      twitterPassword:String, tweet:String):void {
+      var url:String = 
+        "http://" + twitterName + ":" + twitterPassword + "@" +
+        "twitter.com/statuses/update.xml";
+      ServiceUtils.send(url, _responder, {status:tweet});
     }
   }
 }
