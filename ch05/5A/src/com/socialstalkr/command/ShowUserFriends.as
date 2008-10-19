@@ -15,7 +15,7 @@ package com.socialstalkr.command {
   
     public function execute(event:CairngormEvent):void {
       var delegate:TwitterDelegate = new TwitterDelegate(this);
-      delegate.showUserFriends(event.data);
+      delegate.showUserFriends();
     }
 
     public function result(event:Object):void {

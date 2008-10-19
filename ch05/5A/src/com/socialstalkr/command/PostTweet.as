@@ -2,7 +2,9 @@ package com.socialstalkr.command {
   import com.adobe.cairngorm.commands.ICommand;
   import com.adobe.cairngorm.control.CairngormEvent;
   import com.socialstalkr.business.TwitterDelegate;
+  import com.socialstalkr.control.EventNames;
   import com.socialstalkr.model.SocialStalkrModelLocator;
+  import com.socialstalkr.util.CairngormUtils;
   
   import mx.rpc.IResponder;
   import mx.rpc.events.FaultEvent;
@@ -10,21 +12,17 @@ package com.socialstalkr.command {
   import mx.collections.XMLListCollection;
   
   public class PostTweet implements ICommand, IResponder {
-    [Bindable]
-    private var _model:SocialStalkrModelLocator =
-      SocialStalkrModelLocator.instance;
-
     public function PostTweet() {
     }
   
     public function execute(event:CairngormEvent):void {
       var delegate:TwitterDelegate = new TwitterDelegate(this);
-      delegate.postTweet(_model.username, _model.password,
-        event.data);
+      delegate.postTweet(event.data);
     }
 
     public function result(event:Object):void {
       trace("result: " + event);
+      CairngormUtils.dispatchEvent(EventNames.SHOW_USER_TWEETS);
     }
   
     public function fault(event:Object):void {

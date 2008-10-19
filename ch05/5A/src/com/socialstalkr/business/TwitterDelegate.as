@@ -1,18 +1,23 @@
 package com.socialstalkr.business {
+  import com.socialstalkr.model.SocialStalkrModelLocator;
   import com.socialstalkr.util.ServiceUtils;
   
   import mx.rpc.IResponder;
   
   public class TwitterDelegate {
+    [Bindable]
+    private var _model:SocialStalkrModelLocator =
+      SocialStalkrModelLocator.instance;
+    
     private var _responder:IResponder;
     
     public function TwitterDelegate(responder:IResponder) {
       _responder = responder;
     }
     
-    public function showUserFriends(twitterName:String):void {
+    public function showUserFriends():void {
       ServiceUtils.send("http://twitter.com/statuses/friends/" +
-        twitterName + ".xml", _responder);
+        _model.username + ".xml", _responder);
     }
 
     public function showUserTweets(twitterName:String):void {
@@ -21,11 +26,10 @@ package com.socialstalkr.business {
         twitterName + ".xml", _responder);
     }
     
-    public function postTweet(twitterName:String,
-      twitterPassword:String, tweet:String):void {
+    public function postTweet(tweet:String):void {
       var url:String = 
-        "http://" + twitterName + ":" + twitterPassword + "@" +
-        "twitter.com/statuses/update.xml";
+        "http://" + _model.username + ":" + _model.password +
+        "@twitter.com/statuses/update.xml";
       ServiceUtils.send(url, _responder, {status:tweet});
     }
   }
