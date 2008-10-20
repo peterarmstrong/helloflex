@@ -3,7 +3,14 @@
   width="100%" height="100%" label="Geocode">
 <mx:Script><![CDATA[
   import mx.events.ValidationResultEvent;
+  import com.socialstalkr.control.EventNames;
+  import com.socialstalkr.util.CairngormUtils;
+  import com.socialstalkr.model.SocialStalkrModelLocator;
   
+  [Bindable]
+  private var _model:SocialStalkrModelLocator =
+    SocialStalkrModelLocator.instance;
+
   private var _country:String;
   
   [Bindable]
@@ -55,6 +62,14 @@
       
     }
   }
+  
+  private function doSearch():void {
+    var locStr:String = "@{" + addressTI.text + " " +
+      cityTI.text + " " + _country + "}";
+    _model.selectedTweet.text = locStr;
+    CairngormUtils.dispatchEvent(EventNames.LOCATE_TWEET,
+      _model.selectedTweet);
+  }
 ]]></mx:Script>
   <mx:ZipCodeFormatter id="zipCodeFormatter"
     formatString="#####-####"/>
@@ -88,7 +103,7 @@ enabled="{stateCB.dataProvider.length > 0}"/>
         focusOut="validateAndFormatZipCode()"/>
     </mx:FormItem>
     <mx:FormItem>
-      <mx:Button label="Search"/>
+      <mx:Button label="Search" click="doSearch()"/>
     </mx:FormItem>
   </mx:Form>
 </mx:VBox>

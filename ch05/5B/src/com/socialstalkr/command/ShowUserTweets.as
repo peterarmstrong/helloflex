@@ -27,12 +27,12 @@ package com.socialstalkr.command {
         new XMLListCollection(XMLList(event.result.children()));
       _model.twitterUserTweets = tweetsXLC;
       if (tweetsXLC.length > 0) {
-        var selectedTweet:XML = XML(tweetsXLC.getItemAt(0));
+        _model.selectedTweet = XML(tweetsXLC.getItemAt(0));
         if (_model.twitterUser == null) {
-          _model.twitterUser = XML(selectedTweet.user);
+          _model.twitterUser = XML(_model.selectedTweet.user);
         } else {
           CairngormUtils.dispatchEvent(EventNames.LOCATE_TWEET,
-            selectedTweet);
+            _model.selectedTweet);
         }
       }
     }
