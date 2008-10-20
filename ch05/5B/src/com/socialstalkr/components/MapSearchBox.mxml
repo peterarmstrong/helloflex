@@ -3,18 +3,30 @@
   width="100%" height="100%" label="Geocode">
 <mx:Script><![CDATA[
   import mx.events.ValidationResultEvent;
+  
+  private var _country:String;
+  
+  [Bindable]
+  private var _international:Boolean;
+  
   private function validateAndFormatZipCode():void {
+    var unformattedText:String = zipTI.text.toUpperCase();
+    unformattedText = unformattedText.replace(/\W/g, "");
     var result:ValidationResultEvent =
-      zipCodeValidator.validate();
+      zipCodeValidator.validate(unformattedText);
     if (result.type == ValidationResultEvent.VALID) {
-      zipTI.text = zipCodeFormatter.format(zipTI.text);
+      if (countryCB.selectedItem.data == "USA") {
+        zipTI.text = zipCodeFormatter.format(unformattedText);
+      } else {
+        zipTI.text = postalCodeFormatter.format(unformattedText);
+      } 
     }
   }
   
   private static const COUNTRIES:Array =
     [{label:"USA", data: "USA"},
      {label:"Canada", data:"Canada"},
-     {label:"International", data:""}];
+     {label:"Other...", data:""}];
     
   private static const STATES:Array =
     [{label:"California", data:"CA"},
@@ -35,14 +47,24 @@
       return [];
     }
   }
+  
+  private function updateSelectedCountry():void {
+    _country = countryCB.selectedItem.data as String;
+    _international = _country == "";
+    if (_international) {
+      
+    }
+  }
 ]]></mx:Script>
   <mx:ZipCodeFormatter id="zipCodeFormatter"
     formatString="#####-####"/>
+  <mx:ZipCodeFormatter id="postalCodeFormatter"
+    formatString="### ###"/>
   <mx:ZipCodeValidator id="zipCodeValidator"
     allowedFormatChars=" -"
     domain="US or Canada"
     source="{zipTI}" property="text"/>
-  <mx:Form>
+  <mx:Form width="100%">
     <mx:FormHeading label="Enter a Location"/>
     <mx:FormItem label="Street Address" required="true">
       <mx:TextInput id="addressTI"/>
@@ -50,16 +72,19 @@
     <mx:FormItem label="City" required="true">
       <mx:TextInput id="cityTI"/>
     </mx:FormItem>
-    <mx:FormItem label="Country">
-      <mx:ComboBox id="countryCB" dataProvider="{COUNTRIES}"/>
+    <mx:FormItem label="Country" direction="vertical">
+      <mx:ComboBox id="countryCB" dataProvider="{COUNTRIES}"
+        change="updateSelectedCountry()"/>
+      <mx:TextInput id="countryTI" enabled="{_international}"/>
     </mx:FormItem>
-    <mx:FormItem label="State / Province" width="100%">
-      <mx:ComboBox id="stateCB" width="100%"
+    <mx:FormItem label="State / Province">
+      <mx:ComboBox id="stateCB"
 dataProvider="{getStates(countryCB.selectedItem.data as String)}"
 enabled="{stateCB.dataProvider.length > 0}"/>
     </mx:FormItem>
     <mx:FormItem label="Zip / Postal Code">
       <mx:TextInput id="zipTI"
+        enabled="{stateCB.dataProvider.length > 0}"
         focusOut="validateAndFormatZipCode()"/>
     </mx:FormItem>
     <mx:FormItem>
