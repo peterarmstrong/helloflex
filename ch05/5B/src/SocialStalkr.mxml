@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+  xmlns:components="com.socialstalkr.components.*"
+  xmlns:control="com.socialstalkr.control.*"
+  initialize="init()"
+  layout="absolute"
+  backgroundGradientColors="[#CCCCCC, #FFFFFF]"
+  paddingBottom="5" paddingTop="5"
+  paddingLeft="5" paddingRight="5">
+<mx:Script><![CDATA[
+  import com.socialstalkr.control.EventNames;
+  import com.socialstalkr.util.CairngormUtils;
+  import mx.effects.easing.Bounce;
+  import com.socialstalkr.business.TwitterDelegate;
+  import com.socialstalkr.model.SocialStalkrModelLocator;
+
+  [Bindable]
+  private var _model:SocialStalkrModelLocator =
+    SocialStalkrModelLocator.instance;
+
+  private static const BLURB:String =
+    "This is the MIT-licensed code for the Hello! Flex 3" +
+    " (http://manning.com) book example." +
+    " Code copyright (c) 2008 Peter Armstrong and" +
+    " Dima Berastau.";
+  
+  private function init():void {
+    userBar.x = width/2 - 325;
+    userBar.y = height/2 - 18;
+  }
+
+  private function loadTwitterUser():void {
+    CairngormUtils.dispatchEvent(EventNames.VERIFY_CREDENTIALS,
+    { twitterName: twitterNameTextInput.text,
+      twitterPassword: twitterPasswordTextInput.text});
+  }
+]]></mx:Script>
+  <mx:states>
+    <mx:State name="showMainApp">
+      <mx:SetProperty target="{userBar}" name="percentWidth"
+        value="100"/>
+      <mx:SetProperty target="{twitterNameTextInput}"
+        name="enabled" value="false"/>
+      <mx:SetProperty target="{passwordLabel}"
+        name="visible" value="false"/>
+      <mx:SetProperty target="{twitterPasswordTextInput}"
+        name="visible" value="false"/>
+      <mx:SetProperty target="{loginButton}"
+        name="visible" value="false"/>
+      <mx:AddChild relativeTo="{userBar}">
+        <mx:Spacer width="100%"/>
+      </mx:AddChild>
+      <mx:AddChild relativeTo="{userBar}">
+        <mx:Button label="Logout"
+          click="TwitterDelegate.endSession();"/>
+      </mx:AddChild>
+      <mx:AddChild>
+        <mx:VBox id="mainBox" x="0" y="40"
+          width="100%" height="{height - 40}">
+          <mx:HBox width="100%" height="100%">
+            <components:MapPanel id="mapPanel"/>
+            <components:TwitterBox id="twitterBox"/>
+          </mx:HBox>
+          <mx:HBox id="footerBox" horizontalAlign="left"
+            width="100%">
+            <mx:Image
+source="http://l.yimg.com/us.yimg.com/i/us/nt/bdg/websrv_120_1.gif"/>
+            <mx:Label text="{BLURB}"/>
+          </mx:HBox>
+        </mx:VBox>
+      </mx:AddChild>
+    </mx:State>
+  </mx:states>
+  <mx:transitions>
+    <mx:Transition fromState="" toState="showMainApp">
+      <mx:Parallel duration="500">
+        <mx:Sequence target="{userBar}">
+          <mx:Move target="{userBar}" yTo="0"/>
+          <mx:Move target="{userBar}" xTo="0"/>
+          <mx:Resize target="{userBar}" widthTo="{width}"/>
+          <mx:SetPropertyAction target="{userBar}"
+            name="percentWidth"/>
+        </mx:Sequence>
+        <mx:WipeUp target="{mainBox}"/>
+      </mx:Parallel>
+    </mx:Transition>
+  </mx:transitions>
+  <mx:Move id="initialEffect" yFrom="0"
+    duration="900" easingFunction="Bounce.easeOut"/>
+  <control:SocialStalkrController id="controller"/>
+  <mx:ApplicationControlBar id="userBar" width="650"
+    creationCompleteEffect="{initialEffect}">
+    <mx:Label text="Twitter Name:"/>
+    <mx:TextInput id="twitterNameTextInput" width="200"
+      text="peterarmstrong" enter="loadTwitterUser()"/>
+    <mx:Label id="passwordLabel" text="Password:"/>
+    <mx:TextInput id="twitterPasswordTextInput" width="200"
+      text="" displayAsPassword="true"
+      enter="loadTwitterUser()"/>
+    <mx:Button label="Login" id="loginButton"
+      click="loadTwitterUser()"/>
+  </mx:ApplicationControlBar>
+</mx:Application>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+  width="100%" height="100%" label="Geocode">
+<mx:Script><![CDATA[
+  import mx.events.ValidationResultEvent;
+  private function validateAndFormatZipCode():void {
+    var result:ValidationResultEvent =
+      zipCodeValidator.validate();
+    if (result.type == ValidationResultEvent.VALID) {
+      zipTI.text = zipCodeFormatter.format(zipTI.text);
+    }
+  }
+  
+  private static const COUNTRIES:Array =
+    [{label:"USA", data: "USA"},
+     {label:"Canada", data:"Canada"},
+     {label:"International", data:""}];
+    
+  private static const STATES:Array =
+    [{label:"California", data:"CA"},
+     {label:"Oregon", data:"OR"},
+     {label:"Washington", data:"WA"}];
+
+  private static const PROVINCES:Array =
+    [{label:"British Columbia", data:"BC"},
+     {label:"Alberta", data:"AB"},
+     {label:"Saskatchewan", data:"SK"}];
+     
+  private function getStates(country:String):Array {
+    if (country == "USA") {
+      return STATES;
+    } else if (country == "Canada") {
+      return PROVINCES;
+    } else {
+      return [];
+    }
+  }
+]]></mx:Script>
+  <mx:ZipCodeFormatter id="zipCodeFormatter"
+    formatString="#####-####"/>
+  <mx:ZipCodeValidator id="zipCodeValidator"
+    allowedFormatChars=" -"
+    domain="US or Canada"
+    source="{zipTI}" property="text"/>
+  <mx:Form>
+    <mx:FormHeading label="Enter a Location"/>
+    <mx:FormItem label="Street Address" required="true">
+      <mx:TextInput id="addressTI"/>
+    </mx:FormItem>
+    <mx:FormItem label="City" required="true">
+      <mx:TextInput id="cityTI"/>
+    </mx:FormItem>
+    <mx:FormItem label="Country">
+      <mx:ComboBox id="countryCB" dataProvider="{COUNTRIES}"/>
+    </mx:FormItem>
+    <mx:FormItem label="State / Province" width="100%">
+      <mx:ComboBox id="stateCB" width="100%"
+dataProvider="{getStates(countryCB.selectedItem.data as String)}"
+enabled="{stateCB.dataProvider.length > 0}"/>
+    </mx:FormItem>
+    <mx:FormItem label="Zip / Postal Code">
+      <mx:TextInput id="zipTI"
+        focusOut="validateAndFormatZipCode()"/>
+    </mx:FormItem>
+    <mx:FormItem>
+      <mx:Button label="Search"/>
+    </mx:FormItem>
+  </mx:Form>
+</mx:VBox>
