@@ -11,6 +11,7 @@
   import com.socialstalkr.control.EventNames;
   import com.socialstalkr.util.CairngormUtils;
   import mx.effects.easing.Bounce;
+  import com.socialstalkr.business.TwitterDelegate;
   import com.socialstalkr.model.SocialStalkrModelLocator;
 
   [Bindable]
@@ -30,16 +31,29 @@
 
   private function loadTwitterUser():void {
     CairngormUtils.dispatchEvent(EventNames.VERIFY_CREDENTIALS,
-    { twitterName: twitterName.text,
-      twitterPassword: twitterPassword.text});
+    { twitterName: twitterNameTextInput.text,
+      twitterPassword: twitterPasswordTextInput.text});
   }
 ]]></mx:Script>
   <mx:states>
     <mx:State name="showMainApp">
       <mx:SetProperty target="{userBar}" name="percentWidth"
         value="100"/>
-      <mx:SetProperty target="{userBar}" name="enabled"
-        value="false"/>
+      <mx:SetProperty target="{twitterNameTextInput}"
+        name="enabled" value="false"/>
+      <mx:SetProperty target="{passwordLabel}"
+        name="visible" value="false"/>
+      <mx:SetProperty target="{twitterPasswordTextInput}"
+        name="visible" value="false"/>
+      <mx:SetProperty target="{loginButton}"
+        name="visible" value="false"/>
+      <mx:AddChild relativeTo="{userBar}">
+        <mx:Spacer width="100%"/>
+      </mx:AddChild>
+      <mx:AddChild relativeTo="{userBar}">
+        <mx:Button label="Logout"
+          click="TwitterDelegate.endSession();"/>
+      </mx:AddChild>
       <mx:AddChild>
         <mx:VBox id="mainBox" x="0" y="40"
           width="100%" height="{height - 40}">
@@ -77,12 +91,13 @@ source="http://l.yimg.com/us.yimg.com/i/us/nt/bdg/websrv_120_1.gif"/>
   <mx:ApplicationControlBar id="userBar" width="650"
     creationCompleteEffect="{initialEffect}">
     <mx:Label text="Twitter Name:"/>
-    <mx:TextInput id="twitterName" width="200"
+    <mx:TextInput id="twitterNameTextInput" width="200"
       text="peterarmstrong" enter="loadTwitterUser()"/>
-    <mx:Label text="Password:"/>
-    <mx:TextInput id="twitterPassword" width="200"
+    <mx:Label id="passwordLabel" text="Password:"/>
+    <mx:TextInput id="twitterPasswordTextInput" width="200"
       text="" displayAsPassword="true"
       enter="loadTwitterUser()"/>
-    <mx:Button label="Login" click="loadTwitterUser()"/>
+    <mx:Button label="Login" id="loginButton"
+      click="loadTwitterUser()"/>
   </mx:ApplicationControlBar>
 </mx:Application>

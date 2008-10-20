@@ -2,6 +2,9 @@ package com.socialstalkr.business {
   import com.socialstalkr.model.SocialStalkrModelLocator;
   import com.socialstalkr.util.ServiceUtils;
   
+  import flash.net.URLRequest;
+  import flash.net.navigateToURL;
+  
   import mx.rpc.IResponder;
   
   public class TwitterDelegate {
@@ -35,10 +38,17 @@ package com.socialstalkr.business {
     }
     
     public function postTweet(tweet:String):void {
-      var url:String = 
-        "http://" + _model.username + ":" + _model.password +
-        "@twitter.com/statuses/update.xml";
-      ServiceUtils.send(url, _responder, {status:tweet});
+      ServiceUtils.send("http://twitter.com/statuses/update.xml",
+        _responder, {status:tweet});
     }
+    
+    public static function endSession():void {
+      ServiceUtils.send("http://twitter.com/account/end_session");
+      try {
+        navigateToURL(new URLRequest("http://ruboss.com"),
+          "_top");
+      } catch (e:Error) {
+      }
+   }
   }
 }

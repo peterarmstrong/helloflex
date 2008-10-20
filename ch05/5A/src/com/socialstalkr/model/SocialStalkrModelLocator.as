@@ -7,8 +7,6 @@ package com.socialstalkr.model {
   public class SocialStalkrModelLocator implements IModelLocator {
     public var username:String;
     
-    public var password:String;
-    
     public var twitterUser:XML;
 
     public var twitterUserTweets:XMLListCollection;
