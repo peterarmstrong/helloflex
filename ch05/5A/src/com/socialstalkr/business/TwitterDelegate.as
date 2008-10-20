@@ -14,6 +14,14 @@ package com.socialstalkr.business {
     public function TwitterDelegate(responder:IResponder) {
       _responder = responder;
     }
+
+    public function verifyCredentials(twitterName:String,
+    twitterPassword:String):void {
+      var url:String = 
+        "http://" + twitterName + ":" + twitterPassword +
+        "@twitter.com/account/verify_credentials.xml";
+      ServiceUtils.send(url, _responder);
+    }
     
     public function showUserFriends():void {
       ServiceUtils.send("http://twitter.com/statuses/friends/" +

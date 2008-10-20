@@ -29,11 +29,9 @@
   }
 
   private function loadTwitterUser():void {
-    _model.username = twitterName.text;
-    _model.password = twitterPassword.text;
-    CairngormUtils.dispatchEvent(EventNames.SHOW_USER_TWEETS);
-    CairngormUtils.dispatchEvent(EventNames.SHOW_USER_FRIENDS);
-    currentState = "showMainApp";
+    CairngormUtils.dispatchEvent(EventNames.VERIFY_CREDENTIALS,
+    { twitterName: twitterName.text,
+      twitterPassword: twitterPassword.text});
   }
 ]]></mx:Script>
   <mx:states>

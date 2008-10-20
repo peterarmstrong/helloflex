@@ -8,5 +8,7 @@ package com.socialstalkr.control {
       "showFriendTweets";
     public static const LOCATE_TWEET:String = "locateTweet";
     public static const POST_TWEET:String = "postTweet";
+    public static const VERIFY_CREDENTIALS:String =
+      "verifyCredentials";
   }
 }
