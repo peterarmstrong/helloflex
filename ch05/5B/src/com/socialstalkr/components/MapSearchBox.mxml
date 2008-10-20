@@ -12,6 +12,8 @@
     SocialStalkrModelLocator.instance;
 
   private var _country:String;
+
+  private var _state:String;
   
   [Bindable]
   private var _international:Boolean;
@@ -59,13 +61,18 @@
     _country = countryCB.selectedItem.data as String;
     _international = _country == "";
     if (_international) {
-      
+      _state = "";
+      //zipCodeValidator.
+    } else {
+      _state = stateCB.selectedItem.data as String;//TODO - necessary?
     }
   }
   
   private function doSearch():void {
-    var locStr:String = "@{" + addressTI.text + " " +
-      cityTI.text + " " + _country + "}";
+    addressValidator.validate();
+    var locStr:String = "@{" +
+      addressOneTI.text + " " + addressTwoTI.text + " " +
+      cityTI.text + " " + _state + " " + _country + "}";
     _model.selectedTweet.text = locStr;
     CairngormUtils.dispatchEvent(EventNames.LOCATE_TWEET,
       _model.selectedTweet);
@@ -78,27 +85,38 @@
   <mx:ZipCodeValidator id="zipCodeValidator"
     allowedFormatChars=" -"
     domain="US or Canada"
-    source="{zipTI}" property="text"/>
+    source="{zipTI}" property="text"
+    enabled="{!_international}"/>
+  <mx:StringValidator id="addressValidator"
+    source="{addressOneTI}" property="text" required="true"/>
+  <mx:StringValidator id="cityValidator"
+    source="{cityTI}" property="text" required="true"/>
+    
   <mx:Form width="100%">
     <mx:FormHeading label="Enter a Location"/>
-    <mx:FormItem label="Street Address" required="true">
-      <mx:TextInput id="addressTI"/>
+    <mx:FormItem label="Street Address" required="true"
+      width="100%">
+      <mx:TextInput id="addressOneTI" width="100%"/>
+      <mx:TextInput id="addressTwoTI" width="100%"/>
     </mx:FormItem>
-    <mx:FormItem label="City" required="true">
-      <mx:TextInput id="cityTI"/>
+    <mx:FormItem label="City" required="true" width="100%">
+      <mx:TextInput id="cityTI" width="100%"/>
     </mx:FormItem>
-    <mx:FormItem label="Country" direction="vertical">
+    <mx:FormItem label="Country" direction="vertical"
+      width="100%">
       <mx:ComboBox id="countryCB" dataProvider="{COUNTRIES}"
         change="updateSelectedCountry()"/>
-      <mx:TextInput id="countryTI" enabled="{_international}"/>
+      <mx:TextInput id="countryTI" enabled="{_international}"
+        width="100%"/>
     </mx:FormItem>
-    <mx:FormItem label="State / Province">
-      <mx:ComboBox id="stateCB"
+    <mx:FormItem label="State / Province" width="100%">
+      <mx:ComboBox id="stateCB" width="100%"
 dataProvider="{getStates(countryCB.selectedItem.data as String)}"
-enabled="{stateCB.dataProvider.length > 0}"/>
+        enabled="{stateCB.dataProvider.length > 0}"
+        change="_state = stateCB.selectedItem.data as String;"/>
     </mx:FormItem>
-    <mx:FormItem label="Zip / Postal Code">
-      <mx:TextInput id="zipTI"
+    <mx:FormItem label="Zip / Postal Code" width="100%">
+      <mx:TextInput id="zipTI" width="100%"
         enabled="{stateCB.dataProvider.length > 0}"
         focusOut="validateAndFormatZipCode()"/>
     </mx:FormItem>
