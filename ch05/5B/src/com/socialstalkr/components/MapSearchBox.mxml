@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
-  width="100%" height="100%" label="Geocode">
+  width="100%" height="100%" label="Locate">
 <mx:Script><![CDATA[
+  import mx.controls.Alert;
   import mx.events.ValidationResultEvent;
+  import mx.validators.Validator;
   import com.socialstalkr.control.EventNames;
   import com.socialstalkr.util.CairngormUtils;
   import com.socialstalkr.model.SocialStalkrModelLocator;
@@ -11,9 +13,11 @@
   private var _model:SocialStalkrModelLocator =
     SocialStalkrModelLocator.instance;
 
-  private var _country:String;
+  [Bindable]
+  private var _country:String = "";
 
-  private var _state:String;
+  [Bindable]
+  private var _state:String = "";
   
   [Bindable]
   private var _international:Boolean;
@@ -35,7 +39,8 @@
   private static const COUNTRIES:Array =
     [{label:"USA", data: "USA"},
      {label:"Canada", data:"Canada"},
-     {label:"Other...", data:""}];
+     {label:"England", data:"England"},
+     {label:"France", data:"France"}];
     
   private static const STATES:Array =
     [{label:"California", data:"CA"},
@@ -59,23 +64,25 @@
   
   private function updateSelectedCountry():void {
     _country = countryCB.selectedItem.data as String;
-    _international = _country == "";
-    if (_international) {
-      _state = "";
-      //zipCodeValidator.
-    } else {
-      _state = stateCB.selectedItem.data as String;//TODO - necessary?
-    }
+    _international = _country != "USA" && _country != "Canada";
+    _state = "";
+    zipTI.text = "";
+    zipCodeValidator.validate();
   }
   
   private function doSearch():void {
-    addressValidator.validate();
-    var locStr:String = "@{" +
-      addressOneTI.text + " " + addressTwoTI.text + " " +
-      cityTI.text + " " + _state + " " + _country + "}";
-    _model.selectedTweet.text = locStr;
-    CairngormUtils.dispatchEvent(EventNames.LOCATE_TWEET,
-      _model.selectedTweet);
+    var results:Array = Validator.validateAll(
+      [addressValidator, cityValidator, zipCodeValidator]);
+    if (results.length > 0) {
+      Alert.show("kthxbye", "fix errors plz!");
+    } else {
+      var locStr:String = "@{" +
+        addressOneTI.text + " " + addressTwoTI.text + " " +
+        cityTI.text + " " + _state + " " + _country + "}";
+      _model.selectedTweet.text = locStr;
+      CairngormUtils.dispatchEvent(EventNames.LOCATE_TWEET,
+        _model.selectedTweet);
+    }
   }
 ]]></mx:Script>
   <mx:ZipCodeFormatter id="zipCodeFormatter"
@@ -83,6 +90,7 @@
   <mx:ZipCodeFormatter id="postalCodeFormatter"
     formatString="### ###"/>
   <mx:ZipCodeValidator id="zipCodeValidator"
+    required="false"
     allowedFormatChars=" -"
     domain="US or Canada"
     source="{zipTI}" property="text"
@@ -92,8 +100,9 @@
   <mx:StringValidator id="cityValidator"
     source="{cityTI}" property="text" required="true"/>
     
-  <mx:Form width="100%">
-    <mx:FormHeading label="Enter a Location"/>
+  <mx:Form width="100%" id="addressForm">
+    <mx:FormHeading
+      label="Location{_country == 'Canada' ? ', eh' :''}?"/>
     <mx:FormItem label="Street Address" required="true"
       width="100%">
       <mx:TextInput id="addressOneTI" width="100%"/>
@@ -102,15 +111,14 @@
     <mx:FormItem label="City" required="true" width="100%">
       <mx:TextInput id="cityTI" width="100%"/>
     </mx:FormItem>
-    <mx:FormItem label="Country" direction="vertical"
-      width="100%">
+    <mx:FormItem label="Country">
       <mx:ComboBox id="countryCB" dataProvider="{COUNTRIES}"
-        change="updateSelectedCountry()"/>
-      <mx:TextInput id="countryTI" enabled="{_international}"
-        width="100%"/>
+        prompt="Select..."
+        change="updateSelectedCountry()" width="150"/>
     </mx:FormItem>
-    <mx:FormItem label="State / Province" width="100%">
-      <mx:ComboBox id="stateCB" width="100%"
+    <mx:FormItem label="State / Province">
+      <mx:ComboBox id="stateCB" width="150"
+        prompt="Select..."
 dataProvider="{getStates(countryCB.selectedItem.data as String)}"
         enabled="{stateCB.dataProvider.length > 0}"
         change="_state = stateCB.selectedItem.data as String;"/>
