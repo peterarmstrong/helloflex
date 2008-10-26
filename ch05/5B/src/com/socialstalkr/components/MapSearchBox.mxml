@@ -52,7 +52,8 @@
      {label:"Alberta", data:"AB"},
      {label:"Saskatchewan", data:"SK"}];
      
-  private function getStates(country:String):Array {
+  private function getStates(countryObj:Object):Array {
+    var country:String = countryObj.data;
     if (country == "USA") {
       return STATES;
     } else if (country == "Canada") {
@@ -79,9 +80,13 @@
       var locStr:String = "@{" +
         addressOneTI.text + " " + addressTwoTI.text + " " +
         cityTI.text + " " + _state + " " + _country + "}";
-      _model.selectedTweet.text = locStr;
+      var fakeTweet:XML =
+        <status>
+          <text>{locStr}</text>
+          {_model.twitterUser}
+        </status>;
       CairngormUtils.dispatchEvent(EventNames.LOCATE_TWEET,
-        _model.selectedTweet);
+        fakeTweet);
     }
   }
 ]]></mx:Script>
@@ -119,7 +124,7 @@
     <mx:FormItem label="State / Province">
       <mx:ComboBox id="stateCB" width="150"
         prompt="Select..."
-dataProvider="{getStates(countryCB.selectedItem.data as String)}"
+        dataProvider="{getStates(countryCB.selectedItem)}"
         enabled="{stateCB.dataProvider.length > 0}"
         change="_state = stateCB.selectedItem.data as String;"/>
     </mx:FormItem>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
-  width="380" height="100%" backgroundColor="#FFFFFF" xmlns:components="com.socialstalkr.components.*">
+  xmlns:components="com.socialstalkr.components.*"
+  width="380" height="100%" backgroundColor="#FFFFFF">
 <mx:Metadata>
   [Event("locateTweet")]
 </mx:Metadata>
@@ -80,8 +81,7 @@ color="{(postTA.text.length > 140) ? 0xFF0000 : 0x000000}"/>
         variableRowHeight="true"
         labelFunction="formatTweet"
 change="locateTweet(XML(selectedUserTweetList.selectedItem))"
-        dataProvider="{_model.twitterUserTweets}"
-        />
+        dataProvider="{_model.twitterUserTweets}"/>
     </mx:VBox>
     <mx:VBox width="100%" height="100%" label="Following">
       <mx:Panel width="100%" height="250"
