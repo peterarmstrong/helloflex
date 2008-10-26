@@ -1,0 +1,9 @@
+/* CSS file */
+.fancyPanel{
+  cornerRadius:8;
+  dropShadowEnabled:"false";
+  highlightAlphas:[1,0];
+  borderAlpha:1;
+  borderColor:"#786937";
+  roundedBottomCorners:"true";
+}

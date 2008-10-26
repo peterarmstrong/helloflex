@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Script><![CDATA[
+  [Bindable]
+  private var _value:XML;
+  
+  [Bindable]
+  public override function set data(
+  value:Object):void {
+    _value = XML(value);
+  }
+  
+  public override function get data():Object {
+    return _value;
+  }
+]]></mx:Script>
+  <mx:Image width="48" height="48"
+    source="{_value.profile_image_url}"/>
+  <mx:VBox>
+    <mx:Label text="{_value.name}"/>
+    <mx:Label fontStyle="italic" text="({_value.screen_name})"/>
+  </mx:VBox>
+</mx:HBox>
