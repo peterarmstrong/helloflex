@@ -3,7 +3,6 @@ package com.socialstalkr.command {
   import com.adobe.cairngorm.control.CairngormEvent;
   import com.socialstalkr.business.TwitterDelegate;
   import com.socialstalkr.control.EventNames;
-  import com.socialstalkr.model.SocialStalkrModelLocator;
   import com.socialstalkr.util.CairngormUtils;
   
   import mx.rpc.IResponder;
@@ -21,12 +20,10 @@ package com.socialstalkr.command {
     }
 
     public function result(event:Object):void {
-      trace("result: " + event);
       CairngormUtils.dispatchEvent(EventNames.SHOW_USER_TWEETS);
     }
   
     public function fault(event:Object):void {
-      trace("fault: " + event);
     }
   }
 }

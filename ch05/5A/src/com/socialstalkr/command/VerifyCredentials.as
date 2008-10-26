@@ -18,15 +18,16 @@ package com.socialstalkr.command {
     }
   
     public function execute(event:CairngormEvent):void {
-      _model.username = event.data.twitterName;
+      _model.userName = event.data.twitterName;
       var delegate:TwitterDelegate = new TwitterDelegate(this);
-      delegate.verifyCredentials(_model.username,
+      delegate.verifyCredentials(_model.userName,
         event.data.twitterPassword);
     }
 
     public function result(event:Object):void {
       CairngormUtils.dispatchEvent(EventNames.SHOW_USER_TWEETS);
-      CairngormUtils.dispatchEvent(EventNames.SHOW_USER_FRIENDS);
+      CairngormUtils.dispatchEvent(EventNames.SHOW_USER_FRIENDS,
+        _model.userName);
       Application.application.currentState = "showMainApp";
     }
   

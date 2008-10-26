@@ -5,7 +5,7 @@ package com.socialstalkr.model {
   
   [Bindable]
   public class SocialStalkrModelLocator implements IModelLocator {
-    public var username:String;
+    public var userName:String;
     
     public var twitterUser:XML;
 
