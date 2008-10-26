@@ -26,9 +26,9 @@ package com.socialstalkr.business {
       ServiceUtils.send(url, _responder);
     }
     
-    public function showUserFriends():void {
+    public function showUserFriends(twitterName:String):void {
       ServiceUtils.send("http://twitter.com/statuses/friends/" +
-        _model.username + ".xml", _responder);
+        twitterName + ".xml", _responder);
     }
 
     public function showUserTweets(twitterName:String):void {

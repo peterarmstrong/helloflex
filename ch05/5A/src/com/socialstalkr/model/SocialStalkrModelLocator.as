@@ -1,7 +1,6 @@
 package com.socialstalkr.model {
-  import com.adobe.cairngorm.model.IModelLocator;
-  
   import mx.collections.XMLListCollection;
+  import com.adobe.cairngorm.model.IModelLocator;
   
   [Bindable]
   public class SocialStalkrModelLocator implements IModelLocator {
