@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+  xmlns:flexlib="http://code.google.com/p/flexlib/"
+  xmlns:components="com.socialstalkr.components.*"
+  width="100%" height="100%" label="Locate">
+<mx:Script><![CDATA[
+  import mx.controls.Alert;
+  import mx.events.ValidationResultEvent;
+  import mx.validators.Validator;
+  import com.socialstalkr.control.EventNames;
+  import com.socialstalkr.util.CairngormUtils;
+  import com.socialstalkr.model.SocialStalkrModelLocator;
+  
+  [Bindable]
+  private var _model:SocialStalkrModelLocator =
+    SocialStalkrModelLocator.instance;
+
+  [Bindable]
+  private var _country:String = "";
+
+  [Bindable]
+  private var _state:String = "";
+  
+  [Bindable]
+  private var _usa:Boolean;
+
+  [Bindable]
+  private var _canada:Boolean;
+  
+  private static const COUNTRIES:Array =
+    [{label:"USA", data: "USA"},
+     {label:"Canada", data:"Canada"},
+     {label:"England", data:"England"},
+     {label:"France", data:"France"}];
+    
+  private static const STATES:Array =
+    [{label:"California", data:"CA"},
+     {label:"Oregon", data:"OR"},
+     {label:"Washington", data:"WA"}];
+
+  private static const PROVINCES:Array =
+    [{label:"British Columbia", data:"BC"},
+     {label:"Alberta", data:"AB"},
+     {label:"Saskatchewan", data:"SK"}];
+     
+  private function getStates(countryObj:Object):Array {
+    var country:String = countryObj.data;
+    if (country == "USA") {
+      return STATES;
+    } else if (country == "Canada") {
+      return PROVINCES;
+    } else {
+      return [];
+    }
+  }
+  
+  private function updateSelectedCountry():void {
+    _country = countryCB.selectedItem.data as String;
+    _usa = _country == "USA";
+    _canada = _country == "Canada";
+    _state = "";
+    zipTI.text = "";
+  }
+  
+  private function doSearch():void {
+    var results:Array = Validator.validateAll(
+      [addressValidator, cityValidator, zipTI.validator]);
+    if (results.length > 0) {
+      Alert.show("kthxbye", "fix errors plz!");
+    } else {
+      var locStr:String = "@{" +
+        addressOneTI.text + " " + addressTwoTI.text + " " +
+        cityTI.text + " " + _state + " " + _country + " " +
+        zipTI.text + "}";
+      var fakeTweet:XML =
+        <status>
+          <text>{locStr}</text>
+          {_model.twitterUser}
+        </status>;
+      CairngormUtils.dispatchEvent(EventNames.LOCATE_TWEET,
+        fakeTweet);
+    }
+  }
+]]></mx:Script>
+  <mx:StringValidator id="addressValidator"
+    source="{addressOneTI}" property="text" required="true"/>
+  <mx:StringValidator id="cityValidator"
+    source="{cityTI}" property="text" required="true"/>
+    
+  <mx:Form width="100%" id="addressForm">
+    <mx:FormHeading
+      label="Location{_canada ? ', eh' :''}?"/>
+    <mx:FormItem label="Street Address" required="true"
+      width="100%">
+      <mx:TextInput id="addressOneTI" width="100%"/>
+      <flexlib:PromptingTextInput id="addressTwoTI" width="100%"
+        prompt="(this line is optional)"/>
+    </mx:FormItem>
+    <mx:FormItem label="City" required="true" width="100%">
+      <mx:TextInput id="cityTI" width="100%"/>
+    </mx:FormItem>
+    <mx:FormItem label="Country">
+      <mx:ComboBox id="countryCB" dataProvider="{COUNTRIES}"
+        prompt="Select..."
+        change="updateSelectedCountry()" width="150"/>
+    </mx:FormItem>
+    <mx:FormItem label="State / Province">
+      <mx:ComboBox id="stateCB" width="150"
+        prompt="Select..."
+        dataProvider="{getStates(countryCB.selectedItem)}"
+        enabled="{stateCB.dataProvider.length > 0}"
+        change="_state = stateCB.selectedItem.data as String;"/>
+    </mx:FormItem>
+    <mx:FormItem label="Zip / Postal Code" width="100%">
+      <components:PostalCodeTextInput id="zipTI" width="100%"
+        usa="{_usa}" enabled="{_usa || _canada}"/>
+    </mx:FormItem>
+    <mx:FormItem>
+      <mx:Button label="Search" click="doSearch()"/>
+    </mx:FormItem>
+  </mx:Form>
+</mx:VBox>
