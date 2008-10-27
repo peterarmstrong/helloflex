@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
   xmlns:flexlib="http://code.google.com/p/flexlib/"
-  width="100%" height="100%" label="Locate" xmlns:components="com.socialstalkr.components.*">
+  xmlns:components="com.socialstalkr.components.*"
+  width="100%" height="100%" label="Locate">
 <mx:Script><![CDATA[
   import mx.controls.Alert;
   import mx.events.ValidationResultEvent;
@@ -59,7 +60,6 @@
     _canada = _country == "Canada";
     _state = "";
     zipTI.text = "";
-    //zipCodeValidator.validate();
   }
   
   private function doSearch():void {
@@ -91,14 +91,12 @@
       label="Location{_canada ? ', eh' :''}?"/>
     <mx:FormItem label="Street Address" required="true"
       width="100%">
-      <flexlib:PromptingTextInput id="addressOneTI" width="100%"
-        prompt="address line 1 (required)"/>
+      <mx:TextInput id="addressOneTI" width="100%"/>
       <flexlib:PromptingTextInput id="addressTwoTI" width="100%"
-        prompt="address line 2 (optional)"/>
+        prompt="(this line is optional)"/>
     </mx:FormItem>
     <mx:FormItem label="City" required="true" width="100%">
-      <flexlib:PromptingTextInput id="cityTI" width="100%"
-        prompt="city (required)"/>
+      <mx:TextInput id="cityTI" width="100%"/>
     </mx:FormItem>
     <mx:FormItem label="Country">
       <mx:ComboBox id="countryCB" dataProvider="{COUNTRIES}"
