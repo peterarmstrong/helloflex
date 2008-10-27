@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml"
+  xmlns:flexlib="http://code.google.com/p/flexlib/"
+  xmlns:components="com.socialstalkr.components.*"
+  width="100%" label="Locate"
+  paddingTop="0" paddingBottom="0">
+<mx:Script><![CDATA[
+  import mx.controls.Alert;
+  import mx.events.ValidationResultEvent;
+  import mx.validators.Validator;
+  import com.socialstalkr.control.EventNames;
+  import com.socialstalkr.util.CairngormUtils;
+  import com.socialstalkr.model.Address;
+  import com.socialstalkr.model.SocialStalkrModelLocator;
+  
+  [Bindable]
+  public var address:Address;
+
+  [Bindable]
+  private var _usa:Boolean;
+
+  [Bindable]
+  private var _canada:Boolean;
+  
+  private static const COUNTRIES:Array =
+    ["USA", "Canada", "England", "France"];
+    
+  private static const STATES:Array =
+    [{label:"California", data:"CA"},
+     {label:"Oregon", data:"OR"},
+     {label:"Washington", data:"WA"}];
+
+  private static const PROVINCES:Array =
+    [{label:"British Columbia", data:"BC"},
+     {label:"Alberta", data:"AB"},
+     {label:"Saskatchewan", data:"SK"}];
+     
+  private function getStates(country:String):Array {
+    if (country == "USA") {
+      return STATES;
+    } else if (country == "Canada") {
+      return PROVINCES;
+    } else {
+      return [];
+    }
+  }
+  
+  private function updateSelectedCountry():void {
+    var country:String = countryCB.selectedItem.data as String;
+    _usa = country == "USA";
+    _canada = country == "Canada";
+  }
+  
+  public function isAddressValid():Boolean {
+    var results:Array = Validator.validateAll(
+      [addressValidator, cityValidator, zipTI.validator]);
+    return results.length == 0;
+  }
+  
+  public function validateAndSave():Boolean {
+    if (isAddressValid()) {
+      address.lineOne = addressOneTI.text;
+      address.lineTwo = addressTwoTI.text;
+      address.city = cityTI.text;
+      address.country = countryCB.selectedItem as String;
+      address.state = stateCB.selectedItem.data as String;
+      address.zipCode = zipTI.text;
+      return true;
+    } else {
+      return false;
+    }
+  }
+]]></mx:Script>
+  <mx:StringValidator id="addressValidator"
+    source="{addressOneTI}" property="text" required="true"/>
+  <mx:StringValidator id="cityValidator"
+    source="{cityTI}" property="text" required="true"/>
+  <mx:FormItem label="Street Address" required="true"
+    width="100%">
+    <mx:TextInput id="addressOneTI" width="100%"
+      text="{address.lineOne}"/>
+    <flexlib:PromptingTextInput id="addressTwoTI" width="100%"
+      text="{address.lineTwo}"
+      prompt="(this line is optional)"/>
+  </mx:FormItem>
+  <mx:FormItem label="City" required="true" width="100%">
+    <mx:TextInput id="cityTI" width="100%"
+      text="{address.city}"/>
+  </mx:FormItem>
+  <mx:FormItem label="Country">
+    <mx:ComboBox id="countryCB" dataProvider="{COUNTRIES}"
+      selectedItem="{address.country}"
+      prompt="Select..."
+      change="updateSelectedCountry()" width="150"/>
+  </mx:FormItem>
+  <mx:FormItem label="State / Province">
+    <mx:ComboBox id="stateCB" width="150"
+      prompt="Select..."
+      dataProvider="{getStates(String(countryCB.selectedItem))}"
+      enabled="{stateCB.dataProvider.length > 0}"/>
+  </mx:FormItem>
+  <mx:FormItem label="Zip / Postal Code" width="100%">
+    <components:PostalCodeTextInput id="zipTI"
+      width="100%" text="{address.zipCode}"
+      usa="{_usa}" enabled="{_usa || _canada}"/>
+  </mx:FormItem>
+</mx:Form>
