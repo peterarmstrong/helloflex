@@ -70,7 +70,8 @@
     } else {
       var locStr:String = "@{" +
         addressOneTI.text + " " + addressTwoTI.text + " " +
-        cityTI.text + " " + _state + " " + _country + "}";
+        cityTI.text + " " + _state + " " + _country + " " +
+        zipTI.text + "}";
       var fakeTweet:XML =
         <status>
           <text>{locStr}</text>
