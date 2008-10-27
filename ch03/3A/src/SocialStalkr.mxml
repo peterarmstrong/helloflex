@@ -6,11 +6,6 @@
   paddingBottom="5" paddingTop="5"
   paddingLeft="5" paddingRight="5">
 <mx:Script><![CDATA[
-  private static const BLURB:String =
-    "This is the MIT-licensed code for the Hello! Flex 3" +
-    " (http://manning.com) book example." +
-    " Code copyright (c) 2008 Peter Armstrong and" +
-    " Dima Berastau.";
 ]]></mx:Script>
   <mx:ApplicationControlBar width="100%">
     <mx:Label text="Twitter Name:"/>
@@ -28,6 +23,8 @@ locateTweet="mapPanel.locateTweet(twitterBox.selectedTweet)"/>
   <mx:HBox horizontalAlign="left">
     <mx:Image
 source="http://l.yimg.com/us.yimg.com/i/us/nt/bdg/websrv_120_1.gif"/>
-    <mx:Label text="{BLURB}"/>
+    <mx:Label text="This is the MIT-licensed book code
+ for Hello! Flex 4 (http://manning.com/armstrong3/). Code &#169;
+ 2008 Peter Armstrong, Dima Berastau and Ross Ladell."/>
   </mx:HBox>
 </mx:Application>

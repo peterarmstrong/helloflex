@@ -24,12 +24,6 @@
 
   import com.socialstalkr.components.TwitterMarker;
   
-  private static const BLURB:String =
-    "This is the MIT-licensed code for the Hello! Flex 3" +
-    " (http://manning.com) book example." +
-    " Code copyright (c) 2008 Peter Armstrong and" +
-    " Dima Berastau.";
-
   private static const YAHOO_APP_ID:String =
 "TWLRFYTV34GhMOfRCZubCe_LcKgnCKtK06BYJy3WNYSg0d.MaEk1483y4_OpzxjlJEk-";
 
@@ -259,6 +253,8 @@ change="locateTweet(XML(selectedFriendTweetList.selectedItem))"
   <mx:HBox horizontalAlign="left">
     <mx:Image
 source="http://l.yimg.com/us.yimg.com/i/us/nt/bdg/websrv_120_1.gif"/>
-    <mx:Label text="{BLURB}"/>
+    <mx:Label text="This is the MIT-licensed book code
+ for Hello! Flex 4 (http://manning.com/armstrong3/). Code &#169;
+ 2008 Peter Armstrong, Dima Berastau and Ross Ladell."/>
   </mx:HBox>
 </mx:Application>

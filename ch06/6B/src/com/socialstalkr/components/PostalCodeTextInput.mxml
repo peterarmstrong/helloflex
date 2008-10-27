@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TextInput xmlns:mx="http://www.adobe.com/2006/mxml"
+  focusOut="validateAndFormatZipCode()">
+<mx:Script><![CDATA[
+  import mx.events.ValidationResultEvent;
+
+  public var usa:Boolean;
+
+  private function validateAndFormatZipCode():void {
+    var unformattedText:String =
+      text.toUpperCase().replace(/\W/g, "");
+    var result:ValidationResultEvent =
+      validator.validate(unformattedText);
+    if (result.type == ValidationResultEvent.VALID) {
+      if (usa) {
+        text = zipCodeFormatter.format(unformattedText);
+      } else {
+        text = postalCodeFormatter.format(unformattedText);
+      } 
+    }
+  }
+]]></mx:Script>
+  <mx:ZipCodeFormatter id="zipCodeFormatter"
+    formatString="#####-####"/>
+  <mx:ZipCodeFormatter id="postalCodeFormatter"
+    formatString="### ###"/>
+  <mx:ZipCodeValidator id="validator"
+    required="false"
+    allowedFormatChars=" -"
+    domain="US or Canada"
+    source="{this}"
+    property="text"
+    enabled="{enabled}"/>
+</mx:TextInput>

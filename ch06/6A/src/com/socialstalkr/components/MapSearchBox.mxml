@@ -111,14 +111,12 @@
       label="Location{_country == 'Canada' ? ', eh' :''}?"/>
     <mx:FormItem label="Street Address" required="true"
       width="100%">
-      <flexlib:PromptingTextInput id="addressOneTI" width="100%"
-        prompt="address line 1 (required)"/>
+      <mx:TextInput id="addressOneTI" width="100%"/>
       <flexlib:PromptingTextInput id="addressTwoTI" width="100%"
-        prompt="address line 2 (optional)"/>
+        prompt="(this line is optional)"/>
     </mx:FormItem>
     <mx:FormItem label="City" required="true" width="100%">
-      <flexlib:PromptingTextInput id="cityTI" width="100%"
-        prompt="city (required)"/>
+      <mx:TextInput id="cityTI" width="100%"/>
     </mx:FormItem>
     <mx:FormItem label="Country">
       <mx:ComboBox id="countryCB" dataProvider="{COUNTRIES}"
