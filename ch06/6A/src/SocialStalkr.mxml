@@ -19,10 +19,9 @@
     SocialStalkrModelLocator.instance;
 
   private static const BLURB:String =
-    "This is the MIT-licensed code for the Hello! Flex 3" +
-    " (http://manning.com) book example." +
-    " Code copyright (c) 2008 Peter Armstrong and" +
-    " Dima Berastau.";
+    "This is the MIT-licensed code for the Hello! Flex 4" +
+    " book example. Code copyright (c) 2008 Peter Armstrong, " +
+    "Dima Berastau and Ross Ladell.";
   
   private function init():void {
     userBar.x = width/2 - 325;

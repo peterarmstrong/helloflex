@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+  xmlns:flexlib="flexlib.controls.*"
   width="100%" height="100%" label="Locate">
 <mx:Script><![CDATA[
   import mx.controls.Alert;
@@ -110,11 +111,14 @@
       label="Location{_country == 'Canada' ? ', eh' :''}?"/>
     <mx:FormItem label="Street Address" required="true"
       width="100%">
-      <mx:TextInput id="addressOneTI" width="100%"/>
-      <mx:TextInput id="addressTwoTI" width="100%"/>
+      <flexlib:PromptingTextInput id="addressOneTI" width="100%"
+        prompt="address line 1 (required)"/>
+      <flexlib:PromptingTextInput id="addressTwoTI" width="100%"
+        prompt="address line 2 (optional)"/>
     </mx:FormItem>
     <mx:FormItem label="City" required="true" width="100%">
-      <mx:TextInput id="cityTI" width="100%"/>
+      <flexlib:PromptingTextInput id="cityTI" width="100%"
+        prompt="city (required)"/>
     </mx:FormItem>
     <mx:FormItem label="Country">
       <mx:ComboBox id="countryCB" dataProvider="{COUNTRIES}"
