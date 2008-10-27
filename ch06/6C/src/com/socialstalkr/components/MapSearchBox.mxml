@@ -2,8 +2,11 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
   xmlns:flexlib="http://code.google.com/p/flexlib/"
   xmlns:components="com.socialstalkr.components.*"
-  width="100%" height="100%" label="Locate">
+  width="100%" height="100%" label="Locate"
+  paddingLeft="5" paddingRight="5" paddingTop="10"
+  initialize="init()">
 <mx:Script><![CDATA[
+  import mx.collections.ArrayCollection;
   import mx.controls.Alert;
   import mx.events.ValidationResultEvent;
   import mx.validators.Validator;
@@ -19,9 +22,16 @@
   [Bindable]
   private var _address:Address = new Address();
 
+  [Bindable]
+  private var _addresses:ArrayCollection;
+
   private function doSearch():void {
+    var searchAddress:Address = new Address(
+      _address.lineOne, _address.lineTwo, _address.city,
+      _address.country, _address.state, _address.zipCode);
+    _addresses.addItem(searchAddress);
     if (addressForm.validateAndSave()) {
-      var locStr:String = "@{" + _address + "}";
+      var locStr:String = "@{" + searchAddress + "}";
       var fakeTweet:XML =
         <status>
           <text>{locStr}</text>
@@ -33,10 +43,36 @@
       Alert.show("kthxbye", "fix errors plz!");
     }
   }
+  
+  private function init():void {
+    _addresses = new ArrayCollection([
+      new Address("422 Richards Street", "3rd Floor",
+        "Vancouver", "BC", "V6B 2Z3"),
+      new Address("21 Water Street", "Suite 400",
+        "Vancouver", "BC", "V6B 1A1")]);
+  }
+  
+  private function onAddressDataGridClick():void {
+    if (addressDataGrid.selectedItem != null) {
+      _address = Address(addressDataGrid.selectedItem);
+    }
+  }
 ]]></mx:Script>
   <components:AddressForm id="addressForm" labelWidth="120"
     address="{_address}"/>
   <mx:FormItem labelWidth="134">
     <mx:Button label="Search" click="doSearch()"/>
   </mx:FormItem>
+  <mx:DataGrid id="addressDataGrid" width="100%" height="300"
+    dataProvider="{_addresses}"
+    click="onAddressDataGridClick()">
+    <mx:columns>
+      <mx:DataGridColumn dataField="lineOne"
+        headerText="Address Line 1"/>
+      <mx:DataGridColumn dataField="city"
+        headerText="City"/>
+      <mx:DataGridColumn dataField="state"
+        headerText="State"/>
+    </mx:columns>
+  </mx:DataGrid>
 </mx:VBox>

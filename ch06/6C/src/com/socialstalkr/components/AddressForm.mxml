@@ -17,6 +17,9 @@
   public var address:Address;
 
   [Bindable]
+  private var _country:String;
+
+  [Bindable]
   private var _usa:Boolean;
 
   [Bindable]
@@ -45,10 +48,26 @@
     }
   }
   
+  private function getStateWithAbbrev(abbrev:String):Object {
+    trace("AddressForm#getStateWithAbbrev: abbrev = " + abbrev);
+    trace("  _country = " + _country);
+    trace("  _usa = " + _usa);
+    trace("  _canada = " + _canada);
+    var statesOrProvinces:Array = _usa ? STATES : PROVINCES;
+    for each (var state:Object in statesOrProvinces) {
+      trace("state = " + state);
+      if (state.data == abbrev) {
+        return state;
+      }
+    }
+    return abbrev;
+  }
+  
   private function updateSelectedCountry():void {
-    var country:String = countryCB.selectedItem.data as String;
-    _usa = country == "USA";
-    _canada = country == "Canada";
+    _country = countryCB.selectedItem as String;
+    trace("AddressForm#updateSelectedCountry to " + _country);
+    _usa = _country == "USA";
+    _canada = _country == "Canada";
   }
   
   public function isAddressValid():Boolean {
@@ -63,7 +82,9 @@
       address.lineTwo = addressTwoTI.text;
       address.city = cityTI.text;
       address.country = countryCB.selectedItem as String;
-      address.state = stateCB.selectedItem.data as String;
+      if (stateCB.selectedItem != null) {
+        address.state = stateCB.selectedItem.data as String;
+      }
       address.zipCode = zipTI.text;
       return true;
     } else {
@@ -75,6 +96,8 @@
     source="{addressOneTI}" property="text" required="true"/>
   <mx:StringValidator id="cityValidator"
     source="{cityTI}" property="text" required="true"/>
+  <mx:FormHeading
+    label="Location{_canada ? ', eh' :''}?"/>
   <mx:FormItem label="Street Address" required="true"
     width="100%">
     <mx:TextInput id="addressOneTI" width="100%"
@@ -88,15 +111,17 @@
       text="{address.city}"/>
   </mx:FormItem>
   <mx:FormItem label="Country">
-    <mx:ComboBox id="countryCB" dataProvider="{COUNTRIES}"
+    <mx:ComboBox id="countryCB" width="150"
+      dataProvider="{COUNTRIES}"
       selectedItem="{address.country}"
       prompt="Select..."
-      change="updateSelectedCountry()" width="150"/>
+      change="updateSelectedCountry()"/>
   </mx:FormItem>
   <mx:FormItem label="State / Province">
     <mx:ComboBox id="stateCB" width="150"
       prompt="Select..."
-      dataProvider="{getStates(String(countryCB.selectedItem))}"
+      selectedItem="{getStateWithAbbrev(address.state)}"
+      dataProvider="{getStates(_country)}"
       enabled="{stateCB.dataProvider.length > 0}"/>
   </mx:FormItem>
   <mx:FormItem label="Zip / Postal Code" width="100%">
