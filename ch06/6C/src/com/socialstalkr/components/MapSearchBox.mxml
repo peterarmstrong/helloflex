@@ -26,22 +26,26 @@
   private var _addresses:ArrayCollection;
 
   private function doSearch():void {
-    var searchAddress:Address = new Address(
-      _address.lineOne, _address.lineTwo, _address.city,
-      _address.country, _address.state, _address.zipCode);
-    _addresses.addItem(searchAddress);
     if (addressForm.validateAndSave()) {
-      var locStr:String = "@{" + searchAddress + "}";
-      var fakeTweet:XML =
-        <status>
-          <text>{locStr}</text>
-          {_model.twitterUser}
-        </status>;
-      CairngormUtils.dispatchEvent(EventNames.LOCATE_TWEET,
-        fakeTweet);
+      var searchAddress:Address = new Address(
+        _address.lineOne, _address.lineTwo, _address.city,
+        _address.state, _address.country, _address.zipCode);
+      _addresses.addItem(searchAddress);
+      showAddress(searchAddress);
     } else {
       Alert.show("kthxbye", "fix errors plz!");
     }
+  }
+  
+  private function showAddress(address:Address):void {
+    var locStr:String = "@{" + address + "}";
+    var fakeTweet:XML =
+      <status>
+        <text>{locStr}</text>
+        {_model.twitterUser}
+      </status>;
+    CairngormUtils.dispatchEvent(EventNames.LOCATE_TWEET,
+      fakeTweet);
   }
   
   private function init():void {
@@ -55,6 +59,7 @@
   private function onAddressDataGridClick():void {
     if (addressDataGrid.selectedItem != null) {
       _address = Address(addressDataGrid.selectedItem);
+      showAddress(_address);
     }
   }
 ]]></mx:Script>

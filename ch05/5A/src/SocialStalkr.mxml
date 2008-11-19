@@ -5,7 +5,6 @@
   initialize="init()"
   layout="absolute"
   backgroundGradientColors="[#CCCCCC, #FFFFFF]"
-  currentState="showMainApp"
   paddingBottom="5" paddingTop="5"
   paddingLeft="5" paddingRight="5">
 <mx:Script><![CDATA[
@@ -61,7 +60,7 @@
             <mx:Image
 source="http://l.yimg.com/us.yimg.com/i/us/nt/bdg/websrv_120_1.gif"/>
             <mx:Label text="This is the MIT-licensed book code
- for Hello! Flex 4 (http://manning.com/armstrong3/). Code is
+for Hello! Flex 4 (http://manning.com/armstrong3/). Code is
 copyright &#169; 2008 the authors."/>
           </mx:HBox>
         </mx:VBox>

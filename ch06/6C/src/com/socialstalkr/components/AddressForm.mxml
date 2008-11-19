@@ -49,13 +49,8 @@
   }
   
   private function getStateWithAbbrev(abbrev:String):Object {
-    trace("AddressForm#getStateWithAbbrev: abbrev = " + abbrev);
-    trace("  _country = " + _country);
-    trace("  _usa = " + _usa);
-    trace("  _canada = " + _canada);
     var statesOrProvinces:Array = _usa ? STATES : PROVINCES;
     for each (var state:Object in statesOrProvinces) {
-      trace("state = " + state);
       if (state.data == abbrev) {
         return state;
       }
@@ -65,7 +60,6 @@
   
   private function updateSelectedCountry():void {
     _country = countryCB.selectedItem as String;
-    trace("AddressForm#updateSelectedCountry to " + _country);
     _usa = _country == "USA";
     _canada = _country == "Canada";
   }

@@ -31,8 +31,8 @@
   <mx:HBox horizontalAlign="left">
     <mx:Image
 source="http://l.yimg.com/us.yimg.com/i/us/nt/bdg/websrv_120_1.gif"/>
-   <mx:Label text="This is the MIT-licensed book code
-for Hello! Flex 4 (http://manning.com/armstrong3/). Code &#169;
-2008 Peter Armstrong, Dima Berastau and Ross Ladell."/>
+    <mx:Label text="This is the MIT-licensed book code
+for Hello! Flex 4 (http://manning.com/armstrong3/). Code is
+copyright &#169; 2008 the authors."/>
   </mx:HBox>
 </mx:Application>
