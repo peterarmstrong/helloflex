@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+  xmlns:components="com.socialstalkr.components.*"
   styleName="plain" initialize="init()">
   <mx:Script>
     <![CDATA[
@@ -33,6 +34,16 @@
       }
     ]]>
   </mx:Script>
+  <mx:Form>
+    <mx:FormItem label="zip">
+      <components:PostalCodeTextInput id="zipTI" width="100%"
+        usa="true"/>
+    </mx:FormItem>
+    <mx:FormItem label="postal">
+      <components:PostalCodeTextInput id="postalTI" width="100%"
+        usa="false"/>
+    </mx:FormItem>
+  </mx:Form>
   <mx:Text text="{debugText}" width="100%" height="100%"/>
   <mx:DataGrid width="100%"
     dataProvider="{tweets.tweet.(@user == 'peterarmstrong')}"/>
