@@ -75,8 +75,14 @@
       address.lineOne = addressOneTI.text;
       address.lineTwo = addressTwoTI.text;
       address.city = cityTI.text;
-      address.country = countryCB.selectedItem as String;
-      if (stateCB.selectedItem != null) {
+      if (countryCB.selectedItem == null) {
+        address.country = "";
+      } else {
+        address.country = countryCB.selectedItem as String;
+      }
+      if (stateCB.selectedItem == null) {
+        address.state = "";
+      } else {
         address.state = stateCB.selectedItem.data as String;
       }
       address.zipCode = zipTI.text;
