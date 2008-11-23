@@ -7,7 +7,7 @@
   import mx.events.ValidationResultEvent;
 
   [Bindable]
-  public var required:Boolean;
+  public var required:Boolean = false;
 
   [Bindable]
   public var usa:Boolean;
@@ -35,17 +35,9 @@
   <mx:ZipCodeFormatter id="postalCodeFormatter"
     formatString="### ###"/>
   <mx:ZipCodeValidator id="zipCodeValidator"
-    required="{required}"
-    allowedFormatChars=" -"
-    domain="US or Canada"
-    source="{this}"
-    property="text"
-    enabled="{enabled &amp;&amp; usa}"
-    triggerEvent=""/>
-  <val:PostalCodeValidator id="postalCodeValidator"
-    required="{required}"
-    source="{this}"
-    property="text"
-    enabled="{enabled &amp;&amp; !usa}"
-    triggerEvent=""/>
+    required="{required}" listener="{this}" triggerEvent=""/>
+  <mx:RegExpValidator id="postalCodeValidator"
+    expression="^[A-Z]\d[A-Z]\d[A-Z]\d$"
+    noMatchError="The postal code is invalid."
+    required="{required}" listener="{this}" triggerEvent=""/>
 </mx:TextInput>
