@@ -2,9 +2,18 @@
 <mx:TextInput xmlns:mx="http://www.adobe.com/2006/mxml"
   focusOut="validateAndFormatZipCode()">
 <mx:Script><![CDATA[
+  import mx.validators.Validator;
   import mx.events.ValidationResultEvent;
 
+  [Bindable]
+  public var required:Boolean = false;
+
+  [Bindable]
   public var usa:Boolean;
+  
+  public function get validator():Validator {
+    return usa ? zipCodeValidator : postalCodeValidator;
+  }
 
   private function validateAndFormatZipCode():void {
     var unformattedText:String =
@@ -24,11 +33,10 @@
     formatString="#####-####"/>
   <mx:ZipCodeFormatter id="postalCodeFormatter"
     formatString="### ###"/>
-  <mx:ZipCodeValidator id="validator"
-    required="false"
-    allowedFormatChars=" -"
-    domain="US or Canada"
-    source="{this}"
-    property="text"
-    enabled="{enabled}"/>
+  <mx:ZipCodeValidator id="zipCodeValidator"
+    required="{required}" listener="{this}" triggerEvent=""/>
+  <mx:RegExpValidator id="postalCodeValidator"
+    expression="^[A-Z]\d[A-Z]\d[A-Z]\d$"
+    noMatchError="The postal code is invalid."
+    required="{required}" listener="{this}" triggerEvent=""/>
 </mx:TextInput>
