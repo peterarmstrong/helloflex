@@ -96,11 +96,8 @@
   <mx:ZipCodeFormatter id="postalCodeFormatter"
     formatString="### ###"/>
   <mx:ZipCodeValidator id="zipCodeValidator"
-    required="false"
-    allowedFormatChars=" -"
-    domain="US or Canada"
-    source="{zipTI}" property="text"
-    enabled="{!_international}"/>
+    required="false" domain="US or Canada"
+    listener="{zipTI}" enabled="{!_international}"/>
   <mx:StringValidator id="addressValidator"
     source="{addressOneTI}" property="text" required="true"/>
   <mx:StringValidator id="cityValidator"
