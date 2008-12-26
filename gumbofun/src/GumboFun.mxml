@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FxApplication xmlns="http://ns.adobe.com/mxml/2009"
+             backgroundColor="white"
+             width="800" height="600">
+    <layout>
+        <VerticalLayout />
+    </layout>
+    <Ellipse width="500" height="40" y="3">
+        <fill>
+            <RadialGradient>
+                <GradientEntry color="0xAAAAAA" />
+                <GradientEntry color="0x336699" />
+            </RadialGradient>
+        </fill>
+    </Ellipse>
+    <Button label="halo button" />
+    <FxButton label="gumbo button" />
+</FxApplication>

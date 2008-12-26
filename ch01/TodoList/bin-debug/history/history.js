@@ -99,23 +99,40 @@ BrowserHistory = (function() {
         return document.getElementById("safari_remember_field");
     }
 
-    /* Get the Flash player object for performing ExternalInterface callbacks. */
-    function getPlayer(objectId) {
-        var objectId = objectId || null;
-        var player = null; /* AJH, needed?  = document.getElementById(getPlayerId()); */
-        if (browser.ie && objectId != null) {
-            player = document.getElementById(objectId);
-        }
-        if (player == null) {
-            player = document.getElementsByTagName('object')[0];
-        }
-        
-        if (player == null || player.object == null) {
-            player = document.getElementsByTagName('embed')[0];
-        }
-
-        return player;
-    }
+    // Get the Flash player object for performing ExternalInterface callbacks.
+    // Updated for changes to SWFObject2.
+    function getPlayer(id) {
+		if (id && document.getElementById(id)) {
+			var r = document.getElementById(id);
+			if (typeof r.SetVariable != "undefined") {
+				return r;
+			}
+			else {
+				var o = r.getElementsByTagName("object");
+				var e = r.getElementsByTagName("embed");
+				if (o.length > 0 && typeof o[0].SetVariable != "undefined") {
+					return o[0];
+				}
+				else if (e.length > 0 && typeof e[0].SetVariable != "undefined") {
+					return e[0];
+				}
+			}
+		}
+		else {
+			var o = document.getElementsByTagName("object");
+			var e = document.getElementsByTagName("embed");
+			if (e.length > 0 && typeof e[0].SetVariable != "undefined") {
+				return e[0];
+			}
+			else if (o.length > 0 && typeof o[0].SetVariable != "undefined") {
+				return o[0];
+			}
+			else if (o.length > 1 && typeof o[1].SetVariable != "undefined") {
+				return o[1];
+			}
+		}
+		return undefined;
+	}
     
     function getPlayers() {
         var players = [];
@@ -130,6 +147,18 @@ BrowserHistory = (function() {
         }
         return players;
     }
+
+	function getIframeHash() {
+		var doc = getHistoryFrame().contentWindow.document;
+		var hash = String(doc.location.search);
+		if (hash.length == 1 && hash.charAt(0) == "?") {
+			hash = "";
+		}
+		else if (hash.length >= 2 && hash.charAt(0) == "?") {
+			hash = hash.substring(1);
+		}
+		return hash;
+	}
 
     /* Get the current location hash excluding the '#' symbol. */
     function getHash() {
@@ -265,7 +294,11 @@ BrowserHistory = (function() {
                     currentHref = document.location.href;
                     document.location.reload();
                 } else {
-                    //getHistoryFrame().src = historyFrameSourcePrefix + getHash();
+					if (getHash() != getIframeHash()) {
+						// this.iframe.src = this.blankURL + hash;
+						var sourceToSet = historyFrameSourcePrefix + getHash();
+						getHistoryFrame().src = sourceToSet;
+					}
                 }
             }
         }

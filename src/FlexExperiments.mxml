@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- http://blog.flexexamples.com/2008/10/23/setting-the-vertical-gap-in-a-vertical-layout-in-flex-gumbo/ -->
+<FxApplication name="FxApplication_layout_VerticalLayout_gap_test"
+        xmlns="http://ns.adobe.com/mxml/2009">
+  <FxButton label="FxTest!"/>
+</FxApplication>
