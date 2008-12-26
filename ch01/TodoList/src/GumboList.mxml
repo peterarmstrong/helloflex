@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FxApplication xmlns="http://ns.adobe.com/mxml/2009"
   backgroundColor="white" width="100%" height="100%">
-<!--
-    backgroundGradientColors="[#000000, #CCCCCC]">
--->
 <Script>
 <![CDATA[
     import mx.collections.ArrayCollection;
@@ -23,9 +20,6 @@
     }
 ]]>
 </Script>
-    <layout>
-        <VerticalLayout />
-    </layout>
   <FxPanel title="Todo List" width="100%" height="100%">
     <HBox width="100%" paddingLeft="5" paddingRight="5"
       paddingTop="5">
