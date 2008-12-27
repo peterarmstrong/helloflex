@@ -5,6 +5,14 @@
     <layout>
         <VerticalLayout />
     </layout>
+    <Rect width="200" height="200">
+       <fill>
+          <SolidColor color="#FF0000" />
+       </fill>
+       <stroke>
+          <SolidColorStroke weight="10" color="#0000FF" alpha="0.5" />
+       </stroke>
+    </Rect>
     <Ellipse width="500" height="40" y="3">
         <fill>
             <RadialGradient>
